@@ -6,18 +6,19 @@ const LeftView = () => {
       <section
         className="border border-dark bg-body-tertiary position-fixed"
         style={{
-          width: "250px",
+          width: "100%",
+          maxWidth: "275px", // Limits the width on larger screens
           height: "calc(100vh - 60px)",
           top: "60px",
           left: 0,
         }}
       >
         <div
-          className="d-flex flex-column align-items-center justify-content-center p-3"
+          className="d-flex flex-column align-items-center justify-content-between p-3"
           style={{ height: "100%" }}
         >
-          <ul className="nav flex-column mb-auto">
-            <li className="nav-item fs-4">
+          <ul className="nav flex-column w-100">
+            <li className="nav-item fs-5">
               <a
                 href="#"
                 className="nav-link d-flex align-items-center text-dark"
@@ -26,7 +27,7 @@ const LeftView = () => {
                 <span className="d-none d-sm-inline">Home</span>
               </a>
             </li>
-            <li className="nav-item fs-4">
+            <li className="nav-item fs-5">
               <a
                 href="#"
                 className="nav-link d-flex align-items-center text-dark"
@@ -35,7 +36,7 @@ const LeftView = () => {
                 <span className="d-none d-sm-inline">Explore</span>
               </a>
             </li>
-            <li className="nav-item fs-4">
+            <li className="nav-item fs-5">
               <a
                 href="#"
                 className="nav-link d-flex align-items-center text-dark"
@@ -44,7 +45,7 @@ const LeftView = () => {
                 <span className="d-none d-sm-inline">Bookmarks</span>
               </a>
             </li>
-            <li className="nav-item fs-4">
+            <li className="nav-item fs-5">
               <a
                 href="#"
                 className="nav-link d-flex align-items-center text-dark"
@@ -57,7 +58,20 @@ const LeftView = () => {
               <button className="btn btn-dark w-100 mt-3">Post</button>
             </li>
           </ul>
-          <p className="sticky-md-bottom">USER</p>
+          <div className="d-flex align-items-center p-2 w-100 mt-auto">
+            <div className="me-3">
+              <img
+                style={{ width: "50px" }}
+                className="img-fluid"
+                src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU="
+                alt="avatar"
+              />
+            </div>
+            <div className="flex-grow-1">
+              <div className="fw-bold">John Doe</div>
+              <div className="text-muted">@JohnDoe</div>
+            </div>
+          </div>
         </div>
       </section>
     </>
