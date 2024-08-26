@@ -38,7 +38,7 @@ const PostCard = () => {
     post.posts.posts.forEach((p) => {
       dispatch(likedPost(p));
     });
-  }, [post.posts.posts, dispatch]); 
+  }, [post.posts.posts, dispatch]);
 
   return (
     <section className="container-fluid p-3">
