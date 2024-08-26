@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { likeCount, likedPost } from "../features/posts";
 
 const PostCard = () => {
+  const dispatch = useDispatch();
   const post = useSelector((state) => state);
-  console.log(post.posts.posts[0]);
+  // console.log(post.posts.posts[0].likeCounter);
 
   const popover = (
     <Popover id="popover-basic">
@@ -26,10 +28,22 @@ const PostCard = () => {
     </Popover>
   );
 
+  //  Like Handler
+  const likeHandler = (post) => {
+    dispatch(likeCount(post));
+    dispatch(likedPost(post));
+  };
+
+  useEffect(() => {
+    post.posts.posts.forEach((p) => {
+      dispatch(likedPost(p));
+    });
+  }, [post.posts.posts, dispatch]); 
+
   return (
     <section className="container-fluid p-3">
-      {post.posts.posts.map((post, index) => (
-        <div className="row justify-content-center mb-4" key={index}>
+      {post.posts.posts.map((post) => (
+        <div className="row justify-content-center mb-4" key={post.postId}>
           <div className="col-12 col-md-10 col-lg-10 border border-dark rounded py-3 px-4">
             <div className="d-flex align-items-start justify-content-between pb-2">
               <div className="d-flex align-items-start">
@@ -70,12 +84,19 @@ const PostCard = () => {
               </OverlayTrigger>
             </div>
             <div className="d-flex justify-content-between mt-2">
-              <div>
-                <i className="bi bi-heart me-1"></i> <span>2</span>
+              <div onClick={() => likeHandler(post)}>
+                <i
+                  className={
+                    post.like.liked
+                      ? "bi bi-heart-fill me-1"
+                      : "bi bi-heart me-1"
+                  }
+                ></i>{" "}
+                <span>{post.like.counter}</span>
               </div>
               <i className="bi bi-bookmark me-3"></i>
               <div>
-                <i className="bi bi-chat me-1"></i> <span>4</span>
+                <i className="bi bi-chat me-1"></i> <span>{post.comment}</span>
               </div>
               <i className="bi bi-share"></i>
             </div>

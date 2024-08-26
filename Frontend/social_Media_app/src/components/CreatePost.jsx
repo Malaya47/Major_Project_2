@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createPost } from "../features/posts";
 import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
@@ -27,8 +28,7 @@ const CreatePost = () => {
   const formattedDate = formatDate(currentDate);
 
   const postObject = {
-    name: "Malaya",
-    userName: "Malaya13",
+    postId: uuidv4(),
     date: formattedDate,
     userContent: {
       text: post,
@@ -68,7 +68,12 @@ const CreatePost = () => {
                   className="form-control border-0"
                   placeholder="What's on your mind?"
                   id="floatingTextarea"
-                  style={{ width: "100%", outline: "none", resize: "none" }}
+                  style={{
+                    width: "100%",
+                    outline: "none",
+                    resize: "none",
+                    boxShadow: "none",
+                  }}
                 ></textarea>
               </div>
             </div>

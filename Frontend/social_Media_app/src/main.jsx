@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import store from "./app/store.js";
 import { Provider } from "react-redux";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
