@@ -1,11 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // status: "idle",
-  // error: null,
-  // userProfile: null,
-
   posts: [
     {
       postId: "id-001",
@@ -85,11 +80,36 @@ export const postSlice = createSlice({
         }
       }
     },
+    // Action to temporarily remove media in the modal
+    // editPostRemoveMedia: (state, action) => {
+    //   const foundPost = state.posts.find(
+    //     (post) => post.postId === action.payload.postId
+    //   );
+    //   console.log(JSON.stringify(foundPost));
+    //   if (foundPost) {
+    //     foundPost.userContent.image = ""; // Use a temporary image property
+    //   }
+    // },
+    // Action to commit changes to the post
+    commitPostChanges: (state, action) => {
+      const { postId, text, image } = action.payload;
+      const foundPost = state.posts.find((post) => post.postId === postId);
+      if (foundPost) {
+        foundPost.userContent.text = text; // Update the text
+        foundPost.userContent.image = image; // Update the image
+      }
+    },
   },
 });
 
 // Action generators
-export const { createPost, likeCount, likedPost, bookmarkPost } =
-  postSlice.actions;
+export const {
+  createPost,
+  likeCount,
+  likedPost,
+  bookmarkPost,
+  editPostRemoveMedia,
+  commitPostChanges, // Export the new action
+} = postSlice.actions;
 
 export default postSlice.reducer;

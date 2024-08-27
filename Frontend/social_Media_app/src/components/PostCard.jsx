@@ -132,7 +132,7 @@ const PostCard = () => {
       ))}
 
       {/* Edit Modal */}
-      <EditPost post={editPostData} />
+      <EditPost postId={editPostData.postId} />
     </section>
   );
 };

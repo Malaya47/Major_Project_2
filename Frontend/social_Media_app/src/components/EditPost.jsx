@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { editPostRemoveMedia, commitPostChanges } from "../features/posts";
+import { useDispatch, useSelector } from "react-redux";
 
-const EditPost = ({ post }) => {
+const EditPost = ({ postId }) => {
+  const dispatch = useDispatch();
+
+  // Get the post from Redux using useSelector
+  const post = useSelector((state) =>
+    state.posts.posts.find((p) => p.postId === postId)
+  );
+
+  // Local state to manage post text and image
   const [postText, setPostText] = useState(post?.userContent?.text || "");
+  const [localImage, setLocalImage] = useState(post?.userContent?.image || "");
+
   console.log(post);
 
-  // Update postText when post prop changes
+  // Update postText and localImage when post prop changes
   useEffect(() => {
     setPostText(post?.userContent?.text || "");
+    setLocalImage(post?.userContent?.image || "");
   }, [post]);
 
   // Handler to update the postText state
@@ -14,8 +27,25 @@ const EditPost = ({ post }) => {
     setPostText(e.target.value);
   };
 
-  const removeMedia = (post) => {
+  const removeMedia = () => {
     console.log(post);
+    // Update only the local state, not the Redux state
+    setLocalImage("");
+  };
+
+  const saveChanges = () => {
+    // Here you can dispatch an action to update the Redux state with new text and image
+    dispatch(
+      commitPostChanges({
+        postId: post.postId,
+        text: postText,
+        image: localImage,
+      })
+    );
+    // close the modal after saving changes (Bootstrap way)
+    const modal = document.getElementById("editModal");
+    const modalInstance = bootstrap.Modal.getInstance(modal);
+    modalInstance.hide();
   };
 
   return (
@@ -23,7 +53,7 @@ const EditPost = ({ post }) => {
       <div
         className="modal fade"
         id="editModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -65,13 +95,9 @@ const EditPost = ({ post }) => {
                 </div>
               </div>
               <div>
-                {post?.userContent?.image && (
+                {localImage && (
                   <span className="badge rounded-pill text-bg-dark">
-                    {post?.userContent?.image ? "Media" : ""}{" "}
-                    <i
-                      onClick={() => removeMedia(post)}
-                      className="bi bi-x"
-                    ></i>
+                    Media <i onClick={removeMedia} className="bi bi-x"></i>
                   </span>
                 )}
               </div>
@@ -84,7 +110,11 @@ const EditPost = ({ post }) => {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={saveChanges}
+              >
                 Save changes
               </button>
             </div>
