@@ -1,18 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
-import { likeCount, likedPost } from "../features/posts";
+import { likeCount, likedPost, bookmarkPost } from "../features/posts";
+import EditPost from "../components/EditPost";
 
 const PostCard = () => {
   const dispatch = useDispatch();
+  const [editPostData, setEditPostData] = useState("");
   const post = useSelector((state) => state);
   // console.log(post.posts.posts[0].likeCounter);
 
-  const popover = (
+  const editPostHandler = (post) => {
+    setEditPostData(post);
+    console.log("clicked on edit", post);
+  };
+
+  const popover = (post) => (
     <Popover id="popover-basic">
       <Popover.Body className="bg-dark rounded text-center">
         <span
+          onClick={() => editPostHandler(post)}
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#editModal"
           className="popover-item border-bottom pb-2"
           style={{ cursor: "pointer", display: "block", color: "white" }}
         >
@@ -34,11 +45,19 @@ const PostCard = () => {
     dispatch(likedPost(post));
   };
 
+  // bookmark Handler
+  const bookmarkHandler = (post) => {
+    dispatch(bookmarkPost(post));
+  };
+
   useEffect(() => {
+    // Initialize liked posts and bookmarked posts once when component mounts
     post.posts.posts.forEach((p) => {
       dispatch(likedPost(p));
+      dispatch(bookmarkPost(p));
     });
-  }, [post.posts.posts, dispatch]);
+    // Only run once on mount
+  }, []); // Empty dependency array
 
   return (
     <section className="container-fluid p-3">
@@ -75,7 +94,7 @@ const PostCard = () => {
               <OverlayTrigger
                 trigger="click"
                 placement="bottom"
-                overlay={popover}
+                overlay={popover(post)}
               >
                 <i
                   className="bi bi-three-dots"
@@ -87,14 +106,22 @@ const PostCard = () => {
               <div onClick={() => likeHandler(post)}>
                 <i
                   className={
-                    post.like.liked
+                    post.like?.liked
                       ? "bi bi-heart-fill me-1"
                       : "bi bi-heart me-1"
                   }
                 ></i>{" "}
-                <span>{post.like.counter}</span>
+                <span>{post.like?.counter}</span>
               </div>
-              <i className="bi bi-bookmark me-3"></i>
+              <div onClick={() => bookmarkHandler(post)}>
+                <i
+                  className={
+                    post.bookmarked
+                      ? "bi bi-bookmark-fill me-3"
+                      : "bi bi-bookmark me-3"
+                  }
+                ></i>
+              </div>
               <div>
                 <i className="bi bi-chat me-1"></i> <span>{post.comment}</span>
               </div>
@@ -103,6 +130,9 @@ const PostCard = () => {
           </div>
         </div>
       ))}
+
+      {/* Edit Modal */}
+      <EditPost post={editPostData} />
     </section>
   );
 };

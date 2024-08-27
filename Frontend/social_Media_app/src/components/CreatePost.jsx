@@ -34,13 +34,14 @@ const CreatePost = () => {
       text: post,
       image: imgUrl,
     },
-    likeCounter: 1,
+    like: {liked: false, counter: 2},
+    bookmarked: false,
     comment: 1,
   };
 
   const postHandler = (e) => {
     if (postObject.userContent.text || postObject.userContent.image) {
-      console.log(postObject);
+      
       dispatch(createPost(postObject));
       setPost("");
       setImgUrl("");

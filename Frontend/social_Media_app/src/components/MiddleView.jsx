@@ -9,6 +9,7 @@ const MiddleView = () => {
         <CreatePost />
 
         <PostCard />
+       
       </section>
     </>
   );

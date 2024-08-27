@@ -6,6 +6,7 @@ import View from "./components/View";
 function App() {
   return (
     <>
+      
       <Header />
       <View />
     </>
