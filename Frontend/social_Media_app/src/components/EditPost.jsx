@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { editPostRemoveMedia, commitPostChanges } from "../features/posts";
 import { useDispatch, useSelector } from "react-redux";
+import { Modal } from "bootstrap";
 
 const EditPost = ({ postId }) => {
   const dispatch = useDispatch();
@@ -42,10 +43,15 @@ const EditPost = ({ postId }) => {
         image: localImage,
       })
     );
-    // close the modal after saving changes (Bootstrap way)
-    const modal = document.getElementById("editModal");
-    const modalInstance = bootstrap.Modal.getInstance(modal);
-    modalInstance.hide();
+    // Close the modal using Bootstrap JavaScript API
+    // const modalElement = document.getElementById("editModal");
+
+    // const modalInstance = Modal.getInstance(modalElement);
+    // if (modalInstance) {
+    //   modalInstance.hide();
+    // } else {
+    //   new Modal(modalElement).hide(); // Create a new instance if not found
+    // }
   };
 
   return (
@@ -114,6 +120,7 @@ const EditPost = ({ postId }) => {
                 type="button"
                 className="btn btn-primary"
                 onClick={saveChanges}
+                data-bs-dismiss="modal"
               >
                 Save changes
               </button>

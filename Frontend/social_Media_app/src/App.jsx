@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import View from "./components/View";
@@ -6,7 +5,6 @@ import View from "./components/View";
 function App() {
   return (
     <>
-      
       <Header />
       <View />
     </>

@@ -9,7 +9,7 @@ const Header = () => {
       >
         <div className="container-fluid">
           <NavLink to="/" className="navbar-brand text-light">
-            NEXUS
+            BlueSky
           </NavLink>
           <button
             className="navbar-toggler"

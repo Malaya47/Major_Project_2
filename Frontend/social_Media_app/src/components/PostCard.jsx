@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
-import { likeCount, likedPost, bookmarkPost } from "../features/posts";
+import {
+  likeCount,
+  likedPost,
+  bookmarkPost,
+  deletePost,
+} from "../features/posts";
 import EditPost from "../components/EditPost";
 
 const PostCard = () => {
@@ -14,6 +19,10 @@ const PostCard = () => {
   const editPostHandler = (post) => {
     setEditPostData(post);
     console.log("clicked on edit", post);
+  };
+
+  const deletePostHandler = (post) => {
+    dispatch(deletePost({ postId: post.postId }));
   };
 
   const popover = (post) => (
@@ -30,6 +39,7 @@ const PostCard = () => {
           Edit
         </span>
         <span
+          onClick={() => deletePostHandler(post)}
           className="popover-item pt-2"
           style={{ cursor: "pointer", display: "block", color: "white" }}
         >
@@ -95,6 +105,7 @@ const PostCard = () => {
                 trigger="click"
                 placement="bottom"
                 overlay={popover(post)}
+                rootClose
               >
                 <i
                   className="bi bi-three-dots"

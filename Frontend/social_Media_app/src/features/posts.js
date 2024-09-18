@@ -99,6 +99,13 @@ export const postSlice = createSlice({
         foundPost.userContent.image = image; // Update the image
       }
     },
+    deletePost: (state, action) => {
+      // console.log("Current state:", JSON.stringify(state, null, 2));
+      // console.log("Action payload:", action.payload);
+      state.posts = state.posts.filter(
+        (post) => post.postId !== action.payload.postId
+      );
+    }
   },
 });
 
@@ -110,6 +117,7 @@ export const {
   bookmarkPost,
   editPostRemoveMedia,
   commitPostChanges, // Export the new action
+  deletePost
 } = postSlice.actions;
 
 export default postSlice.reducer;
