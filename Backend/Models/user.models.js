@@ -7,6 +7,7 @@ const postSchema = new mongoose.Schema({
   likes: { type: Number, default: 0 },
   liked: { type: Boolean, default: false },
   date: { type: String },
+  bookmarked: { type: Boolean, default: false },
   comments: [
     {
       name: String,
@@ -16,20 +17,20 @@ const postSchema = new mongoose.Schema({
   ],
 });
 
-const followerSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  userName: {
-    type: String,
-    required: true,
-  },
-  profileImage: {
-    type: String,
-    required: true,
-  },
-});
+// const followerSchema = new mongoose.Schema({
+//   name: {
+//     type: String,
+//     required: true,
+//   },
+//   userName: {
+//     type: String,
+//     required: true,
+//   },
+//   profileImage: {
+//     type: String,
+//     required: true,
+//   },
+// });
 
 const userSchema = new mongoose.Schema(
   {
@@ -48,8 +49,8 @@ const userSchema = new mongoose.Schema(
     profileImage: {
       type: String,
     },
-    followers: [followerSchema],
-    following: [followerSchema],
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },

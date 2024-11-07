@@ -85,7 +85,12 @@ app.post("/:userId/post", async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userId,
       {
-        $push: { posts: savedPost._id },
+        $push: {
+          posts: {
+            $each: [savedPost._id],
+            $position: 0,
+          },
+        },
       },
       { new: true }
     );
@@ -104,16 +109,22 @@ app.post("/:userId/post/:postId/bookmark", async (req, res) => {
     const userId = req.params.userId;
     const postId = req.params.postId;
 
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      { bookmarked: true },
+      { new: true }
+    );
+
     const user = await User.findByIdAndUpdate(
       userId,
       { $push: { bookmarks: postId } },
       { new: true }
     );
 
-    if (user) {
+    if (post) {
       res.status(200).json({ messsage: "Post bookmarked", postId });
     } else {
-      res.status(404).json({ messsage: "User not found" });
+      res.status(404).json({ messsage: "Post not found" });
     }
   } catch (error) {
     res.status(500).json({ message: "Failed to bookmark a post", error });
@@ -210,11 +221,19 @@ app.get("/user/:userId/posts", async (req, res) => {
 app.get("/user/:userId/bookmarked/posts", async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await User.findById(userId).populate("bookmarks");
+    const user = await User.findById(userId).populate({
+      path: "bookmarks",
+      populate: {
+        path: "userId", // This will populate the userId field inside each post
+        select: "name userName profileImage", // Specify which user fields to return
+      },
+    });
+
+
     if (user) {
       res.status(200).json({
         message: "bookmarked posts found",
-        boomkmarks: user.bookmarks,
+        bookmarks: user.bookmarks,
       });
     } else {
       res.status(404).json({ message: "User not found" });
@@ -229,6 +248,12 @@ app.post("/user/remove-bookmark/:userId/:postId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const postId = req.params.postId;
+
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      { bookmarked: false },
+      { new: true }
+    );
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -250,6 +275,106 @@ app.post("/user/remove-bookmark/:userId/:postId", async (req, res) => {
     res
       .status(500)
       .json({ message: "Error removing post from bookmarks", error });
+  }
+});
+
+// for getting main user profile
+app.get("/profileUser/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId)
+      .populate("posts")
+      .populate("bookmarks");
+
+    if (user) {
+      res.status(200).json({ message: "User found", user });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Unable to fetch user", error });
+  }
+});
+
+// for getting all users profile
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().populate("posts");
+    if (users.length >= 0) {
+      res.status(200).json({ message: "Users found", users });
+    } else {
+      res.status(404).json({ message: "Users not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error getting users", error });
+  }
+});
+
+// for getting particular user profile
+app.get("/userProfile/:name", async (req, res) => {
+  try {
+    const name = req.params.name;
+    const user = await User.findOne({ name: name }).populate("posts");
+    console.log(user);
+
+    if (user) {
+      res.status(200).json({ message: "User found", user });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get user", error });
+  }
+});
+
+// for editing post
+app.put("/posts/editPost/:postId", async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const postTextContent = req.body.postTextContent;
+    const postImage = req.body.postImage;
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        postTextContent: postTextContent,
+        postImage: postImage,
+      },
+      { new: true }
+    );
+
+    if (post) {
+      res.status(200).json({ message: "Post updated successfully", post });
+    } else {
+      res.status(404).json({ message: "Post not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Unable to update post", error });
+  }
+});
+
+// for deleting post
+app.delete("/user/:userId/delete/posts/:postId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const postId = req.params.postId;
+    const deletePost = await Post.findByIdAndDelete(postId);
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { posts: postId } },
+      { new: true }
+    );
+    if (deletePost) {
+      res
+        .status(200)
+        .json({ message: "Post deleted successfully", deletePost });
+    } else {
+      res.status(404).json({ message: "Post not deleted" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error occured while deleting post", error });
   }
 });
 
