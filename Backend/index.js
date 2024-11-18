@@ -517,6 +517,7 @@ function verifyToken(req, res, next) {
   try {
     const decoded = jwt.verify(token, "Malaya13");
     console.log("Ye middleware mai hu ", decoded);
+    next()
   } catch (error) {
     res.status(402).json({ message: "Invalid token" });
   }
