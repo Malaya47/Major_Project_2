@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import postReducer from "../features/posts";
+import userReducer from "../features/userSlice";
 import { apiSlice } from "../features/apiSlice";
 
 export default configureStore({
   reducer: {
-    posts: postReducer,
+    user: userReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
