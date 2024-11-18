@@ -1,17 +1,46 @@
-import { useState } from "react";
-import { createPost } from "../features/posts";
+import axios from "axios";
+import { useState, useEffect } from "react";
+// import { createPost } from "../features/posts";
+import {
+  useCreatePostMutation,
+  useGetProfileUserQuery,
+} from "../features/apiSlice";
 import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
 const CreatePost = () => {
+  const [createPostFn, { isLoading }] = useCreatePostMutation();
+  const { refetch } = useGetProfileUserQuery();
   const dispatch = useDispatch();
   const [post, setPost] = useState("");
   const [imgUrl, setImgUrl] = useState("");
 
-  const uploadHandler = (e) => {
+  // console.log("Image Url", imgUrl);
+
+  const uploadHandler = async (e) => {
     const file = e.target.files[0];
-    console.log(file.name);
-    setImgUrl(URL.createObjectURL(file));
+
+    // Create FormData to send the file to the backend
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Set the Cloudinary image URL after successful upload
+      setImgUrl(response.data.imageUrl);
+    } catch (error) {
+      console.log("Image upload failed", error);
+    }
+    // setImgUrl(URL.createObjectURL(file));
   };
 
   const textAreaHandler = (e) => {
@@ -27,26 +56,22 @@ const CreatePost = () => {
   const currentDate = new Date();
   const formattedDate = formatDate(currentDate);
 
-  const postObject = {
-    postId: uuidv4(),
+  const createPost = {
+    userId: "670cbe08cb809542b91cf1c0",
     date: formattedDate,
-    userContent: {
-      text: post,
-      image: imgUrl,
-    },
-    like: {liked: false, counter: 2},
-    bookmarked: false,
-    comment: 1,
+    postTextContent: post,
+    postImage: imgUrl,
   };
 
-  const postHandler = (e) => {
-    if (postObject.userContent.text || postObject.userContent.image) {
-      
-      dispatch(createPost(postObject));
-      setPost("");
-      setImgUrl("");
-    } else {
-      return;
+  const postHandler = async () => {
+    try {
+      const response = await createPostFn(createPost);
+      if (response?.data) {
+        refetch();
+        setPost("");
+      }
+    } catch (error) {
+      console.log("Error creating post", error);
     }
   };
 
@@ -64,6 +89,7 @@ const CreatePost = () => {
               />
               <div className="ms-3 flex-grow-1">
                 <textarea
+                  autoFocus
                   value={post}
                   onChange={textAreaHandler}
                   className="form-control border-0"
