@@ -40,6 +40,12 @@ const userSchema = new mongoose.Schema(
     userName: {
       type: String,
     },
+    email: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
     bio: {
       type: String,
     },
