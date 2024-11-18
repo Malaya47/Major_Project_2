@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
   endpoints: (builder) => ({
     getProfileUser: builder.query({
-      query: () => `profileUser/670cbe08cb809542b91cf1c0`,
+      query: (id) => `profileUser/${id}`,
     }),
     getUserProfile: builder.query({
       query: (name) => `userProfile/${name}`,
@@ -24,6 +24,9 @@ export const apiSlice = createApi({
         url: `670cbe08cb809542b91cf1c0/post`,
         method: "POST",
         body: newPost,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }),
     }),
     editPost: builder.mutation({
@@ -31,6 +34,9 @@ export const apiSlice = createApi({
         url: `posts/editPost/${editedPostDetails._id}`,
         method: "PUT",
         body: editedPostDetails,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }),
     }),
     deletePost: builder.mutation({
@@ -69,6 +75,29 @@ export const apiSlice = createApi({
         method: "POST",
       }),
     }),
+    searchUser: builder.query({
+      query: (name) => `search/user/${name}`,
+    }),
+    registerUser: builder.mutation({
+      query: (userDetails) => ({
+        url: `register`,
+        method: "POST",
+        body: userDetails,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    loginUser: builder.mutation({
+      query: (userDetails) => ({
+        url: `login`,
+        method: "POST",
+        body: userDetails,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
@@ -86,4 +115,7 @@ export const {
   useBookmarkPostMutation,
   useRemoveFromBookmarkMutation,
   useFollowUserMutation,
+  useSearchUserQuery,
+  useRegisterUserMutation,
+  useLoginUserMutation,
 } = apiSlice;
