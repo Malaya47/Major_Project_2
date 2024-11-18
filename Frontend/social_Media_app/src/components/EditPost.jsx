@@ -1,57 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { editPostRemoveMedia, commitPostChanges } from "../features/posts";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import {
+  useEditPostMutation,
+  useGetProfileUserQuery,
+} from "../features/apiSlice";
 import { Modal } from "bootstrap";
 
-const EditPost = ({ postId }) => {
-  const dispatch = useDispatch();
+const EditPost = ({ editPost }) => {
+  console.log(editPost);
+  const [editFn, { isSuccess }] = useEditPostMutation();
+  const { refetch } = useGetProfileUserQuery();
 
-  // Get the post from Redux using useSelector
-  const post = useSelector((state) =>
-    state.posts.posts.find((p) => p.postId === postId)
-  );
+  const [postText, setPostText] = useState(editPost.postTextContent);
 
-  // Local state to manage post text and image
-  const [postText, setPostText] = useState(post?.userContent?.text || "");
-  const [localImage, setLocalImage] = useState(post?.userContent?.image || "");
-
-  console.log(post);
-
-  // Update postText and localImage when post prop changes
   useEffect(() => {
-    setPostText(post?.userContent?.text || "");
-    setLocalImage(post?.userContent?.image || "");
-  }, [post]);
+    setPostText(editPost.postTextContent);
+  }, [editPost.postTextContent]);
 
-  // Handler to update the postText state
   const textAreaHandler = (e) => {
     setPostText(e.target.value);
   };
 
   const removeMedia = () => {
-    console.log(post);
-    // Update only the local state, not the Redux state
-    setLocalImage("");
+    console.log("remove media");
   };
 
-  const saveChanges = () => {
-    // Here you can dispatch an action to update the Redux state with new text and image
-    dispatch(
-      commitPostChanges({
-        postId: post.postId,
-        text: postText,
-        image: localImage,
-      })
-    );
-    // Close the modal using Bootstrap JavaScript API
-    // const modalElement = document.getElementById("editModal");
+  const saveChanges = async () => {
+    try {
+      const response = await editFn({ ...editPost, postTextContent: postText });
 
-    // const modalInstance = Modal.getInstance(modalElement);
-    // if (modalInstance) {
-    //   modalInstance.hide();
-    // } else {
-    //   new Modal(modalElement).hide(); // Create a new instance if not found
-    // }
+      if (response?.data) {
+        await refetch();
+      }
+    } catch (error) {
+      console.error("Error editing post: ", error);
+    }
+  };
+
+  const closeModalHandler = () => {
+    setPostText(editPost.postTextContent);
   };
 
   return (
@@ -67,9 +53,10 @@ const EditPost = ({ postId }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Update
+                Edit post details
               </h1>
               <button
+                onClick={closeModalHandler}
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
@@ -101,7 +88,7 @@ const EditPost = ({ postId }) => {
                 </div>
               </div>
               <div>
-                {localImage && (
+                {"" && (
                   <span className="badge rounded-pill text-bg-dark">
                     Media <i onClick={removeMedia} className="bi bi-x"></i>
                   </span>
@@ -110,6 +97,7 @@ const EditPost = ({ postId }) => {
             </div>
             <div className="modal-footer">
               <button
+                onClick={closeModalHandler}
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
