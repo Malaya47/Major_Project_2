@@ -6,3 +6,12 @@ body {
   background-color: #343a40;
   color: white;
 }
+
+@media (max-width: 992px) {
+  .left-view {
+    display: none;
+  }
+  .right-view {
+    display: none;
+  }
+}
