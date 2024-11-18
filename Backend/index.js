@@ -6,6 +6,8 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const path = require("path");
 const fs = require("fs");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const corsOptions = {
   origin: "*",
@@ -229,7 +231,6 @@ app.get("/user/:userId/bookmarked/posts", async (req, res) => {
       },
     });
 
-
     if (user) {
       res.status(200).json({
         message: "bookmarked posts found",
@@ -376,6 +377,154 @@ app.delete("/user/:userId/delete/posts/:postId", async (req, res) => {
       .status(500)
       .json({ message: "Error occured while deleting post", error });
   }
+});
+
+// for following/followers
+app.post("/profile/:mainUserId/:userId/follow", async (req, res) => {
+  try {
+    const mainUserId = req.params.mainUserId;
+    const userIdToFollow = req.params.userId;
+
+    // Fetch main user and target user from the database
+    const mainUser = await User.findById(mainUserId);
+    const userToFollow = await User.findById(userIdToFollow);
+
+    // Check if both users exist
+    if (!mainUser || !userToFollow) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isFollowing = mainUser.following.includes(userIdToFollow);
+
+    if (isFollowing) {
+      // If already following, unfollow the user
+      await User.findByIdAndUpdate(mainUserId, {
+        $pull: { following: userIdToFollow },
+      });
+      await User.findByIdAndUpdate(userIdToFollow, {
+        $pull: { followers: mainUserId },
+      });
+
+      return res.status(200).json({ message: "User unfollowed successfully" });
+    } else {
+      // If not following, follow the user
+      await User.findByIdAndUpdate(mainUserId, {
+        $push: { following: userIdToFollow },
+      });
+      await User.findByIdAndUpdate(userIdToFollow, {
+        $push: { followers: mainUserId },
+      });
+
+      return res.status(200).json({ message: "User followed successfully" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Error occurred while following/unfollowing user",
+      error,
+    });
+  }
+});
+
+// search user
+app.get("/search/user/:name", async (req, res) => {
+  try {
+    const name = req.params.name || ""; // Set name to an empty string if not provided
+
+    let findUsers;
+
+    if (name) {
+      const allUsers = await User.find();
+      findUsers = allUsers.filter((user) =>
+        user.name.toLowerCase().includes(name.toLowerCase())
+      );
+    } else {
+      findUsers = await User.find(); // Return all users if no name is provided
+    }
+
+    if (!findUsers.length) {
+      return res.status(404).json({ message: "No users found" });
+    }
+    res.status(200).json({ message: "User(s) found", findUsers });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error occurred while searching for user" });
+  }
+});
+
+// Register User API
+app.post("/register", async (req, res) => {
+  try {
+    const userDetails = req.body;
+    const saltRounds = 10;
+
+    if (!userDetails) {
+      res.status(400).json({ error: "No user details given for registration" });
+    }
+
+    bcrypt.hash(userDetails.password, saltRounds, async function (err, hash) {
+      // storing hash password in the DB
+      userDetails.password = hash;
+      const registerUser = new User(userDetails);
+      const saveUser = await registerUser.save();
+    });
+    res.status(201).json({ message: "User registered successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occured while registering user" });
+  }
+});
+
+// Log In API
+app.post("/login", async (req, res) => {
+  try {
+    const userDetails = req.body;
+    const findUser = await User.findOne({ email: userDetails.email });
+    if (!findUser) {
+      res
+        .status(404)
+        .json({ message: "User is not registered please register yourself" });
+    }
+
+    async function checkUserPassword(findUser) {
+      const isMatched = await bcrypt.compare(
+        userDetails.password,
+        findUser.password
+      );
+      if (isMatched) {
+        // login
+        const token = jwt.sign({ admin: findUser.email }, "Malaya13", {
+          expiresIn: "1h",
+        });
+
+        res.status(200).json({ message: "Login Successfull", token: token, user: findUser });
+      }
+    }
+
+    checkUserPassword(findUser);
+  } catch (error) {
+    res.status(500).json({ message: "An error occured while login" });
+  }
+});
+
+// verify token middleware
+function verifyToken(req, res, next) {
+  const token = req.headers["authorization"];
+  if (!token) {
+    res.status(401).json({ message: "No token provided." });
+  }
+  try {
+    const decoded = jwt.verify(token, "Malaya13");
+    console.log("Ye middleware mai hu ", decoded);
+  } catch (error) {
+    res.status(402).json({ message: "Invalid token" });
+  }
+}
+
+// sample route to test middleware
+app.get("/data", verifyToken, (req, res) => {
+  res.json({ message: "Data found" });
 });
 
 const PORT = 3000;
