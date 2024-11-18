@@ -3,26 +3,38 @@ import { OverlayTrigger, Popover } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  likeCount,
-  likedPost,
-  bookmarkPost,
-  deletePost,
-} from "../features/posts";
+  useGetProfileUserQuery,
+  useDeletePostMutation,
+  useLikePostMutation,
+  useUnlikePostMutation,
+  useBookmarkPostMutation,
+  useRemoveFromBookmarkMutation,
+} from "../features/apiSlice";
 import EditPost from "../components/EditPost";
 
-const PostCard = () => {
-  const dispatch = useDispatch();
-  const [editPostData, setEditPostData] = useState("");
-  const post = useSelector((state) => state);
-  // console.log(post.posts.posts[0].likeCounter);
+const PostCard = ({ data, refetch }) => {
+  console.log(data);
+  const [deleteFn, { isSuccess }] = useDeletePostMutation();
+  const [likedFn] = useLikePostMutation();
+  const [unlikedFn] = useUnlikePostMutation();
+  const [bookmarkPostFn] = useBookmarkPostMutation();
+  const [removeBookmarkFn] = useRemoveFromBookmarkMutation();
+  const [editPost, setEditPost] = useState("");
 
   const editPostHandler = (post) => {
-    setEditPostData(post);
-    console.log("clicked on edit", post);
+    setEditPost(post);
+    // console.log("clicked on edit", post);
   };
 
-  const deletePostHandler = (post) => {
-    dispatch(deletePost({ postId: post.postId }));
+  const deletePostHandler = async (post) => {
+    try {
+      const response = await deleteFn(post);
+      if (response?.data) {
+        refetch();
+      }
+    } catch (error) {
+      console.error("Error deleting post: ", error);
+    }
   };
 
   const popover = (post) => (
@@ -50,91 +62,95 @@ const PostCard = () => {
   );
 
   //  Like Handler
-  const likeHandler = (post) => {
-    dispatch(likeCount(post));
-    dispatch(likedPost(post));
+  const likeHandler = async (post) => {
+    console.log("Post liked");
+    if (!post.liked) {
+      await likedFn(post);
+      refetch();
+    } else {
+      await unlikedFn(post);
+      refetch();
+    }
   };
 
   // bookmark Handler
-  const bookmarkHandler = (post) => {
-    dispatch(bookmarkPost(post));
+  const bookmarkHandler = async (post) => {
+    if (!post.bookmarked) {
+      await bookmarkPostFn(post);
+      refetch();
+    } else {
+      await removeBookmarkFn(post);
+      refetch();
+    }
   };
 
-  useEffect(() => {
-    // Initialize liked posts and bookmarked posts once when component mounts
-    post.posts.posts.forEach((p) => {
-      dispatch(likedPost(p));
-      dispatch(bookmarkPost(p));
-    });
-    // Only run once on mount
-  }, []); // Empty dependency array
-
   return (
-    <section className="container-fluid p-3">
-      {post.posts.posts.map((post) => (
-        <div className="row justify-content-center mb-4" key={post.postId}>
-          <div className="col-12 col-md-10 col-lg-10 border border-dark rounded py-3 px-4">
+    <section className="container p-3">
+      {data?.user?.posts?.map((post) => (
+        <div className="row justify-content-center mb-4" key={post._id}>
+          <div className="col-12 col-md-10 col-lg-12 border border-dark rounded py-3 px-4">
             <div className="d-flex align-items-start justify-content-between pb-2">
               <div className="d-flex align-items-start">
                 <img
-                  style={{ width: "50px" }}
+                  style={{ width: "50px", height: "50px" }}
                   className="img-fluid rounded-circle"
                   src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU="
                   alt="avatar"
                 />
-                <div className="ms-3" style={{ flexGrow: 1 }}>
+                <div className="ms-3">
                   <p className="mb-1">
-                    <span className="fs-5 fw-semibold">Malaya Tiwari</span>{" "}
-                    <span className="text-muted">@Malaya13</span>{" "}
+                    <span className="fs-5 fw-semibold">{data?.user?.name}</span>{" "}
+                    <span className="text-muted">{data?.user?.userName}</span>{" "}
                     <span className="text-muted mx-1">
                       <i className="bi bi-dot"></i>
                     </span>
                     <span className="text-muted">{post.date}</span>
                   </p>
-                  <p className="mb-2">{post.userContent.text}</p>
-                  {post.userContent.image && (
+                  <p className="mb-2">{post?.postTextContent}</p>
+                  {post?.postImage && (
                     <img
                       className="img-fluid rounded"
-                      src={post.userContent.image}
+                      src={post?.postImage}
                       alt="post content"
                     />
                   )}
                 </div>
               </div>
-              <OverlayTrigger
-                trigger="click"
-                placement="bottom"
-                overlay={popover(post)}
-                rootClose
-              >
-                <i
-                  className="bi bi-three-dots"
-                  style={{ cursor: "pointer" }}
-                ></i>
-              </OverlayTrigger>
+              {data.user.name === "Malaya" && (
+                <OverlayTrigger
+                  trigger="click"
+                  placement="bottom"
+                  overlay={popover(post)}
+                  rootClose
+                >
+                  <i
+                    className="bi bi-three-dots"
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                </OverlayTrigger>
+              )}
             </div>
             <div className="d-flex justify-content-between mt-2">
               <div onClick={() => likeHandler(post)}>
                 <i
                   className={
-                    post.like?.liked
-                      ? "bi bi-heart-fill me-1"
-                      : "bi bi-heart me-1"
+                    post?.liked ? "bi bi-heart-fill me-1" : "bi bi-heart me-1"
                   }
                 ></i>{" "}
-                <span>{post.like?.counter}</span>
+                <span>{post?.likes}</span>
               </div>
               <div onClick={() => bookmarkHandler(post)}>
                 <i
                   className={
-                    post.bookmarked
+                    post?.bookmarked
                       ? "bi bi-bookmark-fill me-3"
                       : "bi bi-bookmark me-3"
                   }
                 ></i>
               </div>
               <div>
-                <i className="bi bi-chat me-1"></i> <span>{post.comment}</span>
+                <i className="bi bi-chat me-1"></i>{" "}
+                <span>{post?.comments?.length}</span>
               </div>
               <i className="bi bi-share"></i>
             </div>
@@ -143,7 +159,7 @@ const PostCard = () => {
       ))}
 
       {/* Edit Modal */}
-      <EditPost postId={editPostData.postId} />
+      <EditPost editPost={editPost} />
     </section>
   );
 };
