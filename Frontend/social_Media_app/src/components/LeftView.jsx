@@ -1,68 +1,84 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  useGetAllUsersQuery,
+  useGetBookmarkedPostsQuery,
+  useGetProfileUserQuery,
+} from "../features/apiSlice";
 
 const LeftView = () => {
+  const { refetch: refetchUsers } = useGetAllUsersQuery();
+  const { refetch: refetchBookmarks } = useGetBookmarkedPostsQuery();
+  const { status, data, refetch } = useGetProfileUserQuery();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/explore") {
+      refetchUsers();
+    } else if (location.pathname === "/bookmark") {
+      refetchBookmarks();
+    }
+  }, [location, refetchUsers, refetchBookmarks]);
+
+  const handleRefetch = () => {
+    refetch();
+  };
+
   return (
     <>
       <section
-        className="border border-dark bg-body-tertiary position-fixed"
+        className="border border-dark bg-body-tertiary position-fixed w-100 left-view"
         style={{
-          width: "100%",
-          maxWidth: "275px", // Limits the width on larger screens
+          maxWidth: "275px",
           height: "calc(100vh - 60px)",
           top: "60px",
           left: 0,
         }}
       >
-        <div
-          className="d-flex flex-column align-items-center justify-content-between p-3"
-          style={{ height: "100%" }}
-        >
+        <div className="d-flex flex-column align-items-center justify-content-between p-3 h-100">
           <ul className="nav flex-column w-100">
             <li className="nav-item fs-5">
-              <a
-                href="#"
+              <Link
                 className="nav-link d-flex align-items-center text-dark"
+                to="/"
               >
                 <i className="bi bi-house-door-fill me-2"></i>
-                <span className="d-none d-sm-inline">Home</span>
-              </a>
+                <span onClick={handleRefetch} className="d-none d-sm-inline">
+                  Home
+                </span>
+              </Link>
             </li>
             <li className="nav-item fs-5">
-              <a
-                href="#"
+              <Link
                 className="nav-link d-flex align-items-center text-dark"
+                to="/explore"
               >
                 <i className="bi bi-compass-fill me-2"></i>
                 <span className="d-none d-sm-inline">Explore</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item fs-5">
-              <a
-                href="#"
+              <Link
                 className="nav-link d-flex align-items-center text-dark"
+                to="/bookmark"
               >
                 <i className="bi bi-bookmark-fill me-2"></i>
                 <span className="d-none d-sm-inline">Bookmarks</span>
-              </a>
+              </Link>
             </li>
-            <li className="nav-item fs-5">
-              <a
-                href="#"
-                className="nav-link d-flex align-items-center text-dark"
-              >
-                <i className="bi bi-heart-fill me-2"></i>
-                <span className="d-none d-sm-inline">Liked Posts</span>
-              </a>
-            </li>
+
             <li className="nav-item">
-              <button className="btn btn-dark w-100 mt-3">Post</button>
+              <Link to={"/"} className="btn btn-dark w-100 mt-3">
+                Post
+              </Link>
             </li>
           </ul>
+
           <div className="d-flex align-items-center p-2 w-100 mt-auto">
             <div className="me-3">
               <img
+                className="img-fluid rounded-circle"
                 style={{ width: "50px" }}
-                className="img-fluid"
                 src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU="
                 alt="avatar"
               />
