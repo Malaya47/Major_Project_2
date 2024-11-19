@@ -47,7 +47,10 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
     fs.unlinkSync(filePath);
 
     // Return the Cloudinary URL to the client
-    res.status(200).json({ imageUrl: result.secure_url });
+    console.log(result);
+    res
+      .status(200)
+      .json({ imageUrl: result.secure_url, imagePublicId: result.public_id });
   } catch (error) {
     console.error("Cloudinary upload error:", error);
     res.status(500).json({ error: "Failed to upload image" });
@@ -358,24 +361,40 @@ app.delete("/user/:userId/delete/posts/:postId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const postId = req.params.postId;
+
+    // Find the post to get the image public_id
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Delete the image from Cloudinary if it exists
+    if (post.imagePublicId) {
+      try {
+        await cloudinary.uploader.destroy(post.imagePublicId);
+      } catch (cloudinaryError) {
+        console.error("Error deleting image from Cloudinary:", cloudinaryError);
+      }
+    }
+
+    // Delete the post from the database
     const deletePost = await Post.findByIdAndDelete(postId);
 
+    // Remove the post ID from the user's posts array
     const user = await User.findByIdAndUpdate(
       userId,
       { $pull: { posts: postId } },
       { new: true }
     );
+
     if (deletePost) {
-      res
-        .status(200)
-        .json({ message: "Post deleted successfully", deletePost });
+      res.status(200).json({ message: "Post and image deleted successfully", deletePost });
     } else {
-      res.status(404).json({ message: "Post not deleted" });
+      res.status(404).json({ message: "Post deletion failed" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error occured while deleting post", error });
+    console.error("Error occurred while deleting post:", error);
+    res.status(500).json({ message: "Error occurred while deleting post", error });
   }
 });
 
@@ -498,7 +517,9 @@ app.post("/login", async (req, res) => {
           expiresIn: "1h",
         });
 
-        res.status(200).json({ message: "Login Successfull", token: token, user: findUser });
+        res
+          .status(200)
+          .json({ message: "Login Successfull", token: token, user: findUser });
       }
     }
 
@@ -516,8 +537,8 @@ function verifyToken(req, res, next) {
   }
   try {
     const decoded = jwt.verify(token, "Malaya13");
-    console.log("Ye middleware mai hu ", decoded);
-    next()
+
+    next();
   } catch (error) {
     res.status(402).json({ message: "Invalid token" });
   }
