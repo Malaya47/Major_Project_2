@@ -17,11 +17,11 @@ export const apiSlice = createApi({
       query: () => `users/posts`,
     }),
     getBookmarkedPosts: builder.query({
-      query: () => `/user/670cbe08cb809542b91cf1c0/bookmarked/posts`,
+      query: () => `/user/${localStorage.getItem("userId")}/bookmarked/posts`,
     }),
     createPost: builder.mutation({
       query: (newPost) => ({
-        url: `670cbe08cb809542b91cf1c0/post`,
+        url: `${newPost?.userId}/post`,
         method: "POST",
         body: newPost,
         headers: {
@@ -41,7 +41,7 @@ export const apiSlice = createApi({
     }),
     deletePost: builder.mutation({
       query: (post) => ({
-        url: `/user/670cbe08cb809542b91cf1c0/delete/posts/${post._id}`,
+        url: `/user/${localStorage.getItem("userId")}/delete/posts/${post._id}`,
         method: "DELETE",
       }),
     }),
@@ -59,19 +59,21 @@ export const apiSlice = createApi({
     }),
     bookmarkPost: builder.mutation({
       query: (post) => ({
-        url: `670cbe08cb809542b91cf1c0/post/${post._id}/bookmark`,
+        url: `${localStorage.getItem("userId")}/post/${post._id}/bookmark`,
         method: "POST",
       }),
     }),
     removeFromBookmark: builder.mutation({
       query: (post) => ({
-        url: `user/remove-bookmark/670cbe08cb809542b91cf1c0/${post._id}`,
+        url: `user/remove-bookmark/${localStorage.getItem("userId")}/${
+          post._id
+        }`,
         method: "POST",
       }),
     }),
     followUser: builder.mutation({
       query: (user) => ({
-        url: `profile/670cbe08cb809542b91cf1c0/${user._id}/follow`,
+        url: `profile/${localStorage.getItem("userId")}/${user._id}/follow`,
         method: "POST",
       }),
     }),

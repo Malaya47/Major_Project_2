@@ -116,7 +116,7 @@ const PostCard = ({ data, refetch }) => {
                   )}
                 </div>
               </div>
-              {data.user.name === "Malaya" && (
+              {data?.user?.name && (
                 <OverlayTrigger
                   trigger="click"
                   placement="bottom"

@@ -8,7 +8,7 @@ import { Modal } from "bootstrap";
 const EditPost = ({ editPost }) => {
   console.log(editPost);
   const [editFn, { isSuccess }] = useEditPostMutation();
-  const { refetch } = useGetProfileUserQuery();
+  const { refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
 
   const [postText, setPostText] = useState(editPost.postTextContent);
 

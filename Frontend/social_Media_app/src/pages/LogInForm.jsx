@@ -68,7 +68,7 @@ const LogInForm = () => {
                   <div className="row gy-3 gy-md-4 overflow-hidden">
                     <div className="col-12">
                       <label htmlFor="email" className="form-label">
-                        Email <span className="text-danger">*</span>
+                        Email<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
@@ -83,7 +83,7 @@ const LogInForm = () => {
                     </div>
                     <div className="col-12">
                       <label htmlFor="password" className="form-label">
-                        Password <span className="text-danger">*</span>
+                        Password<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}

@@ -4,9 +4,10 @@ import PostCard from "./PostCard";
 import { useGetProfileUserQuery } from "../features/apiSlice";
 
 const MiddleView = () => {
-  const { status, data, refetch } = useGetProfileUserQuery();
+  const { status, data, refetch } = useGetProfileUserQuery(
+    localStorage.getItem("userId")
+  );
 
-  
   return (
     <>
       <section style={{ marginTop: "100px" }}>
