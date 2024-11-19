@@ -1,47 +1,18 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-// import { createPost } from "../features/posts";
+import { useState } from "react";
 import {
   useCreatePostMutation,
   useGetProfileUserQuery,
 } from "../features/apiSlice";
-import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 
 const CreatePost = () => {
   const [createPostFn, { isLoading }] = useCreatePostMutation();
-  const { refetch } = useGetProfileUserQuery();
-  const dispatch = useDispatch();
+  const { refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
+
   const [post, setPost] = useState("");
   const [imgUrl, setImgUrl] = useState("");
-
-  // console.log("Image Url", imgUrl);
-
-  const uploadHandler = async (e) => {
-    const file = e.target.files[0];
-
-    // Create FormData to send the file to the backend
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/api/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      // Set the Cloudinary image URL after successful upload
-      setImgUrl(response.data.imageUrl);
-    } catch (error) {
-      console.log("Image upload failed", error);
-    }
-    // setImgUrl(URL.createObjectURL(file));
-  };
+  const [imgPublicId, setImgPublicId] = useState("");
+  const [file, setFile] = useState(null); // Store the selected file
 
   const textAreaHandler = (e) => {
     setPost(e.target.value);
@@ -57,18 +28,44 @@ const CreatePost = () => {
   const formattedDate = formatDate(currentDate);
 
   const createPost = {
-    userId: "670cbe08cb809542b91cf1c0",
+    userId: localStorage.getItem("userId"),
     date: formattedDate,
     postTextContent: post,
     postImage: imgUrl,
+    imagePublicId: imgPublicId,
   };
 
   const postHandler = async () => {
     try {
+      // Upload the image if a file is selected
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(
+          "http://localhost:3000/api/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        setImgUrl(response.data.imageUrl); // Update the imgUrl
+        setImgPublicId(response.data.imagePublicId); // adding public_id
+        createPost.postImage = response.data.imageUrl; // Add the image URL to the post
+        createPost.imagePublicId = response.data.imagePublicId;
+      }
+
+      // Create the post
       const response = await createPostFn(createPost);
       if (response?.data) {
         refetch();
         setPost("");
+        setImgUrl(""); // Reset image URL
+        setImgPublicId("");
+        setFile(null); // Clear the file state
       }
     } catch (error) {
       console.log("Error creating post", error);
@@ -104,16 +101,7 @@ const CreatePost = () => {
                 ></textarea>
               </div>
             </div>
-            {/* Image preview */}
-            {imgUrl && (
-              <div className="mb-3">
-                <img
-                  src={imgUrl}
-                  alt="Selected"
-                  className="img-fluid rounded"
-                />
-              </div>
-            )}
+
             {/* Image upload */}
             <div className="d-flex justify-content-between align-items-center">
               <div>
@@ -126,7 +114,7 @@ const CreatePost = () => {
                   style={{ display: "none" }}
                   accept="image/*"
                   capture="camera"
-                  onChange={uploadHandler}
+                  onChange={(e) => setFile(e.target.files[0])} // Store the file in state
                 />
               </div>
               {/* Post button */}
