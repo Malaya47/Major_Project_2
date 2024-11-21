@@ -22,7 +22,9 @@ const RightView = () => {
         }}
       >
         <div className="d-flex justify-content-evenly">
-          <button className="btn btn-primary mb-2 px-4">Trending</button>
+          <button className="btn btn-primary mb-2 px-4">
+            <i className="bi bi-fire"></i> Trending
+          </button>
           <button className="btn btn-primary mb-2 px-4">Latest</button>
         </div>
         <div className="d-flex">

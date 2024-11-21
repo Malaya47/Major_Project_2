@@ -8,9 +8,11 @@ import PostCard from "../components/PostCard";
 const BookmarkPage = () => {
   const { data, refetch } = useGetBookmarkedPostsQuery();
 
-
   return (
-    <>
+    <section
+      style={{ backgroundColor: "#16181c", height: "100vh" }}
+      className="text-light"
+    >
       <Header />
       <div className="container">
         <div className="row">
@@ -41,7 +43,7 @@ const BookmarkPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

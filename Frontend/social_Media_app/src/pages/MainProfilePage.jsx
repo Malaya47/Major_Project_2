@@ -20,7 +20,10 @@ const MainProfilePage = () => {
   return (
     <>
       <Header />
-      <div className="container">
+      <div
+        style={{ backgroundColor: "#16181c" }}
+        className="container text-light"
+      >
         <div className="row">
           <div className="col-md-3">
             <LeftView />
@@ -33,7 +36,7 @@ const MainProfilePage = () => {
                 src="https://res.cloudinary.com/darwtgzlk/image/upload/w_400,f_auto,q_auto/v1686251365/socialMedia/profilePictures/user10_dmlsg2.jpg"
                 alt="profile"
               />
-              <button className="btn btn-dark rounded-pill px-3 py-2">
+              <button className="btn btn-primary rounded-pill px-3 py-2">
                 Logout
               </button>
             </div>

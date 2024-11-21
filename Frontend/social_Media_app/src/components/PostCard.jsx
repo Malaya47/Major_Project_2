@@ -85,9 +85,13 @@ const PostCard = ({ data, refetch }) => {
   };
 
   return (
-    <section className="container p-3">
+    <section style={{ backgroundColor: "#16181c" }} className="container p-3">
       {data?.user?.posts?.map((post) => (
-        <div className="row justify-content-center mb-4" key={post._id}>
+        <div
+         
+          className="row justify-content-center mb-4"
+          key={post._id}
+        >
           <div className="col-12 col-md-10 col-lg-12 border border-info-subtle rounded py-3 px-4">
             <div className="d-flex align-items-start justify-content-between pb-2">
               <div className="d-flex align-items-start">

@@ -11,7 +11,10 @@ const ExplorePage = () => {
   return (
     <>
       <Header />
-      <div className="container">
+      <div
+        style={{ backgroundColor: "#16181c" }}
+        className="container text-light"
+      >
         <div className="row">
           <div className="col-md-3">
             <LeftView />

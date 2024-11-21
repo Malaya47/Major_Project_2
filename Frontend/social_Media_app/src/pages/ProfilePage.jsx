@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const { data, isLoading, isError, error, refetch } =
     useGetUserProfileQuery(name);
   const { data: profileUser, refetch: refetchMainUser } =
-    useGetProfileUserQuery(localStorage.getItem('userId'));
+    useGetProfileUserQuery(localStorage.getItem("userId"));
   const [followFn] = useFollowUserMutation();
 
   const { user } = data || {};
@@ -37,7 +37,10 @@ const ProfilePage = () => {
   return (
     <>
       <Header />
-      <div className="container">
+      <div
+        style={{ backgroundColor: "#16181c" }}
+        className="container text-light"
+      >
         <div className="row">
           <div className="col-md-3">
             <LeftView />
@@ -52,7 +55,7 @@ const ProfilePage = () => {
               />
               <button
                 onClick={() => followHandler(user)}
-                className="btn btn-dark rounded-pill px-3 py-2"
+                className="btn btn-primary rounded-pill px-3 py-2"
               >
                 {user?.followers.includes(profileUser?.user._id)
                   ? "Unfollow"
