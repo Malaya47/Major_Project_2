@@ -60,7 +60,7 @@ const RegistrationForm = () => {
                   <div className="row gy-3 gy-md-4 overflow-hidden">
                     <div className="col-12">
                       <label htmlFor="email" className="form-label">
-                        Name <span className="text-danger">*</span>
+                        Name<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
@@ -74,7 +74,7 @@ const RegistrationForm = () => {
                     </div>
                     <div className="col-12">
                       <label htmlFor="email" className="form-label">
-                        Username <span className="text-danger">*</span>
+                        Username<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
@@ -88,7 +88,7 @@ const RegistrationForm = () => {
                     </div>
                     <div className="col-12">
                       <label htmlFor="email" className="form-label">
-                        Email <span className="text-danger">*</span>
+                        Email<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
@@ -103,7 +103,7 @@ const RegistrationForm = () => {
                     </div>
                     <div className="col-12">
                       <label htmlFor="password" className="form-label">
-                        Password <span className="text-danger">*</span>
+                        Password<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
