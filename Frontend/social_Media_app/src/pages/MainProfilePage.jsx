@@ -34,7 +34,7 @@ const MainProfilePage = () => {
                 alt="profile"
               />
               <button className="btn btn-dark rounded-pill px-3 py-2">
-                Follow
+                Logout
               </button>
             </div>
             <div className="mt-4">

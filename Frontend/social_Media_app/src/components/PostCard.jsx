@@ -88,7 +88,7 @@ const PostCard = ({ data, refetch }) => {
     <section className="container p-3">
       {data?.user?.posts?.map((post) => (
         <div className="row justify-content-center mb-4" key={post._id}>
-          <div className="col-12 col-md-10 col-lg-12 border border-dark rounded py-3 px-4">
+          <div className="col-12 col-md-10 col-lg-12 border border-info-subtle rounded py-3 px-4">
             <div className="d-flex align-items-start justify-content-between pb-2">
               <div className="d-flex align-items-start">
                 <img
@@ -100,11 +100,11 @@ const PostCard = ({ data, refetch }) => {
                 <div className="ms-3">
                   <p className="mb-1">
                     <span className="fs-5 fw-semibold">{data?.user?.name}</span>{" "}
-                    <span className="text-muted">{data?.user?.userName}</span>{" "}
-                    <span className="text-muted mx-1">
+                    <span className="text-light">{data?.user?.userName}</span>{" "}
+                    <span className="text-light mx-1">
                       <i className="bi bi-dot"></i>
                     </span>
-                    <span className="text-muted">{post.date}</span>
+                    <span className="text-light">{post.date}</span>
                   </p>
                   <p className="mb-2">{post?.postTextContent}</p>
                   {post?.postImage && (

@@ -12,8 +12,9 @@ const RightView = () => {
   return (
     <>
       <section
-        className="d-none d-lg-block border border-dark bg-body-tertiary p-3 position-fixed right-view"
+        className="d-none d-lg-block border border-info-subtle border-top-0 p-3 position-fixed right-view"
         style={{
+          backgroundColor: "#16181c",
           width: "275px",
           height: "calc(100vh - 60px)", // Adjusts height to accommodate fixed position
           top: "60px", // Adjust this to match your header height
@@ -21,8 +22,8 @@ const RightView = () => {
         }}
       >
         <div className="d-flex justify-content-evenly">
-          <button className="btn btn-dark mb-2 px-4">Trending</button>
-          <button className="btn btn-dark mb-2 px-4">Latest</button>
+          <button className="btn btn-primary mb-2 px-4">Trending</button>
+          <button className="btn btn-primary mb-2 px-4">Latest</button>
         </div>
         <div className="d-flex">
           <input
@@ -34,9 +35,11 @@ const RightView = () => {
             value={searchName}
           />
         </div>
-        <p className="fw-bold">Suggestions for you</p>
+        <div>
+          <p className="fw-bold">Suggestions for you</p>
 
-        <SuggestionListCard searchName={searchName} />
+          <SuggestionListCard searchName={searchName} />
+        </div>
       </section>
     </>
   );

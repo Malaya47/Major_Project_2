@@ -11,7 +11,9 @@ import { Link } from "react-router-dom";
 const SuggestionListCard = ({ searchName }) => {
   console.log(searchName);
   const { data, refetch } = useGetAllUsersQuery();
-  const { refetch: refetchMainUser } = useGetProfileUserQuery();
+  const { refetch: refetchMainUser } = useGetProfileUserQuery(
+    localStorage.getItem("userId")
+  );
   const [followFn] = useFollowUserMutation();
   const { data: user } = useSearchUserQuery(searchName || "", {
     skip: false, // Always fetch since backend will handle empty search cases
@@ -48,7 +50,7 @@ const SuggestionListCard = ({ searchName }) => {
       {usersToDisplay?.map((user) => (
         <div
           key={user._id}
-          className="d-flex align-items-center p-2 border rounded bg-light mb-2"
+          className="d-flex align-items-center p-2 border border-info-subtle rounded   mb-2"
         >
           <Link
             to={`/profile/${user.name}`}
@@ -64,16 +66,16 @@ const SuggestionListCard = ({ searchName }) => {
               />
             </div>
             <div className="flex-grow-1">
-              <div className="fw-bold text-dark">{user.name}</div>
-              <div className="text-muted">@{user.userName}</div>
+              <div className="fw-bold text-light">{user.name}</div>
+              <div className="text-light">@{user.userName}</div>
             </div>
           </Link>
           <div>
             <button
               onClick={() => followHandler(user)}
-              className="btn btn-dark btn-sm"
+              className="btn btn-primary btn-sm"
             >
-              {user.followers.includes("670cbe08cb809542b91cf1c0")
+              {user.followers.includes(`${localStorage.getItem("userId")}`)
                 ? "unfollow"
                 : "follow"}
             </button>

@@ -10,7 +10,7 @@ const MiddleView = () => {
 
   return (
     <>
-      <section style={{ marginTop: "100px" }}>
+      <section style={{ marginTop: "100px", height: "100vh" }}>
         <CreatePost />
 
         <PostCard data={data} refetch={refetch} />

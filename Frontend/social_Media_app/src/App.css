@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -6,6 +10,8 @@ body {
   background-color: #343a40;
   color: white;
 }
+
+
 
 @media (max-width: 992px) {
   .left-view {

@@ -4,10 +4,10 @@ import View from "./components/View";
 
 function App() {
   return (
-    <>
+    <div style={{ backgroundColor: "#16181c" }} className=" text-light">
       <Header />
       <View />
-    </>
+    </div>
   );
 }
 

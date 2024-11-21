@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const { data, isLoading, isError, error, refetch } =
     useGetUserProfileQuery(name);
   const { data: profileUser, refetch: refetchMainUser } =
-    useGetProfileUserQuery();
+    useGetProfileUserQuery(localStorage.getItem('userId'));
   const [followFn] = useFollowUserMutation();
 
   const { user } = data || {};

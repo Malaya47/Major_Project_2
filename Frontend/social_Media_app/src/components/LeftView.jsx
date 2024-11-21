@@ -27,23 +27,27 @@ const LeftView = () => {
   return (
     <>
       <section
-        className="border border-dark bg-body-tertiary position-fixed w-100 left-view"
+        className="border border-info-subtle border-top-0 position-fixed w-100 left-view"
         style={{
+          backgroundColor: "#16181c",
           maxWidth: "275px",
           height: "calc(100vh - 60px)",
           top: "60px",
           left: 0,
         }}
       >
-        <div className="d-flex flex-column align-items-center justify-content-between p-3 h-100">
+        <div className="d-flex flex-column align-items-center justify-content-between p-3 h-100 text-light">
           <ul className="nav flex-column w-100">
             <li className="nav-item fs-5">
               <Link
                 className="nav-link d-flex align-items-center text-dark"
                 to="/"
               >
-                <i className="bi bi-house-door-fill me-2"></i>
-                <span onClick={handleRefetch} className="d-none d-sm-inline">
+                <i className="bi bi-house-door-fill me-2 text-light"></i>
+                <span
+                  onClick={handleRefetch}
+                  className="d-none d-sm-inline text-light"
+                >
                   Home
                 </span>
               </Link>
@@ -53,8 +57,8 @@ const LeftView = () => {
                 className="nav-link d-flex align-items-center text-dark"
                 to="/explore"
               >
-                <i className="bi bi-compass-fill me-2"></i>
-                <span className="d-none d-sm-inline">Explore</span>
+                <i className="bi bi-compass-fill me-2 text-light"></i>
+                <span className="d-none d-sm-inline text-light">Explore</span>
               </Link>
             </li>
             <li className="nav-item fs-5">
@@ -62,13 +66,13 @@ const LeftView = () => {
                 className="nav-link d-flex align-items-center text-dark"
                 to="/bookmark"
               >
-                <i className="bi bi-bookmark-fill me-2"></i>
-                <span className="d-none d-sm-inline">Bookmarks</span>
+                <i className="bi bi-bookmark-fill me-2 text-light"></i>
+                <span className="d-none d-sm-inline text-light">Bookmarks</span>
               </Link>
             </li>
 
             <li className="nav-item">
-              <Link to={"/"} className="btn btn-dark w-100 mt-3">
+              <Link to={"/"} className="btn btn-primary w-100 mt-3">
                 Post
               </Link>
             </li>
@@ -85,7 +89,7 @@ const LeftView = () => {
             </div>
             <div className="flex-grow-1">
               <div className="fw-bold">John Doe</div>
-              <div className="text-muted">@JohnDoe</div>
+              <div className="text-light">@JohnDoe</div>
             </div>
           </div>
         </div>

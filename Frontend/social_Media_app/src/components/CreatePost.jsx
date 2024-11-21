@@ -76,8 +76,8 @@ const CreatePost = () => {
     <>
       <section className="container-fluid p-3">
         <div className="row justify-content-center">
-          <div className="col-12 col-md-8 col-lg-10 border p-3 rounded">
-            <div className="d-flex align-items-start border-bottom pb-2 mb-3">
+          <div className="col-12 col-md-8 col-lg-10 border border-info-subtle p-3 rounded">
+            <div className="d-flex align-items-start border-bottom border-info-subtle pb-2 mb-3">
               <img
                 style={{ width: "50px" }}
                 className="img-fluid"
@@ -97,6 +97,8 @@ const CreatePost = () => {
                     outline: "none",
                     resize: "none",
                     boxShadow: "none",
+                    backgroundColor: "#16181c",
+                    color: "white",
                   }}
                 ></textarea>
               </div>
@@ -105,7 +107,7 @@ const CreatePost = () => {
             {/* Image upload */}
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <label htmlFor="file-upload" className="btn btn-light">
+                <label htmlFor="file-upload" className="btn btn-primary">
                   <i className="bi bi-image"></i>
                 </label>
                 <input
@@ -120,7 +122,7 @@ const CreatePost = () => {
               {/* Post button */}
               <button
                 onClick={postHandler}
-                className="btn btn-sm btn-dark px-3"
+                className="btn btn-sm btn-primary px-3"
               >
                 Post
               </button>
