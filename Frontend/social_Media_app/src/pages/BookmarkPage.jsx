@@ -4,11 +4,13 @@ import LeftView from "../components/LeftView";
 import RightView from "../components/RightView";
 import { useGetBookmarkedPostsQuery } from "../features/apiSlice";
 import PostCard from "../components/PostCard";
+import Footer from "../components/Footer";
 
 const BookmarkPage = () => {
   const { data, refetch } = useGetBookmarkedPostsQuery();
 
   return (
+    <>
     <section
       style={{ backgroundColor: "#16181c", height: "100vh" }}
       className="text-light"
@@ -43,7 +45,10 @@ const BookmarkPage = () => {
           </div>
         </div>
       </div>
+       
     </section>
+    <Footer /> 
+    </>
   );
 };
 

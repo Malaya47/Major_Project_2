@@ -4,6 +4,7 @@ import LeftView from "../components/LeftView";
 import RightView from "../components/RightView";
 import PostCard from "../components/PostCard";
 import { useGetAllUsersQuery } from "../features/apiSlice";
+import Footer from "../components/Footer";
 
 const ExplorePage = () => {
   const { data, refetch } = useGetAllUsersQuery();
@@ -33,6 +34,7 @@ const ExplorePage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

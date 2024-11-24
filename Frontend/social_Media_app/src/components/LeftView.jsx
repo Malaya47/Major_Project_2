@@ -78,7 +78,7 @@ const LeftView = () => {
             </li>
           </ul>
 
-          <div className="d-flex align-items-center p-2 w-100 mt-auto">
+          {/* <div className="d-flex align-items-center p-2 w-100 mt-auto">
             <div className="me-3">
               <img
                 className="img-fluid rounded-circle"
@@ -91,7 +91,7 @@ const LeftView = () => {
               <div className="fw-bold">John Doe</div>
               <div className="text-light">@JohnDoe</div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>
