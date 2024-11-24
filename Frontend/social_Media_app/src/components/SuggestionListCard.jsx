@@ -43,7 +43,12 @@ const SuggestionListCard = ({ searchName }) => {
     }
   };
 
-  const usersToDisplay = searchName ? user?.findUsers : data?.users.slice(1);
+  // to remove logged in user from suggestion list
+  const loggedInUser = localStorage.getItem("userId");
+
+  const filteredUsers = data?.users?.filter((user) => user._id !== loggedInUser)
+
+  const usersToDisplay = searchName ? user?.findUsers : filteredUsers;
 
   return (
     <section className="">
