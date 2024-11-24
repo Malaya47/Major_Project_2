@@ -39,94 +39,85 @@ const LogInForm = () => {
   };
 
   return (
-    <section className="p-3 p-md-4 p-xl-5">
+    <div className="min-vh-100 d-flex align-items-center" style={{ backgroundColor: "#16181c" }}>
       <div className="container">
-        <div className="card border-light-subtle shadow-sm">
+        <div className="card border-0 shadow-lg" style={{ backgroundColor: "#1e2126" }}>
           <div className="row g-0">
-            <div className="col-12 col-md-6 ">
-              <div className="d-flex align-items-center justify-content-center h-100">
-                <div className="col-10 col-xl-8 py-3">
-                  <img
-                    className="img-fluid rounded mb-4"
-                    loading="lazy"
-                    src="https://images.pexels.com/photos/2818118/pexels-photo-2818118.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    alt="BootstrapBrain Logo"
-                  />
+            <div className="col-12 col-md-6">
+              <div className="d-flex flex-column align-items-center justify-content-center h-100 p-5 text-light">
+                <h1 className="display-4 fw-bold mb-3 text-primary">Quantum Verse</h1>
+                <p className="text-muted mb-4">Step into Quantum Verse</p>
+                <div className="text-center">
+                  <h3 className="fw-light mb-3 text-light">Discover <span style={{fontSize: "12px"}} className="text-uppercase">People around the world</span></h3>
+                  <h3 className="fw-light mb-3 text-light">Share <span style={{fontSize: "12px"}} className="text-uppercase">what you thinking</span></h3>
+                  <h3 className="fw-light mb-3 text-light">Connect <span style={{fontSize: "12px"}} className="text-uppercase">with your friends</span></h3>
                 </div>
               </div>
             </div>
-            <div className="col-12 col-md-6">
-              <div className="card-body p-3 p-md-4 p-xl-5">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="mb-5">
-                      <h3>Log in</h3>
-                    </div>
-                  </div>
+            <div className="col-12 col-md-6" style={{ backgroundColor: "#242731" }}>
+              <div className="card-body p-4 p-md-5">
+                <div className="text-center mb-4">
+                  <h2 className="h3 text-light mb-0">Welcome Back</h2>
+                  <p className="text-muted">Sign in to continue</p>
                 </div>
                 <form onSubmit={loginHandler}>
-                  <div className="row gy-3 gy-md-4 overflow-hidden">
+                  <div className="row gy-3 overflow-hidden">
                     <div className="col-12">
-                      <label htmlFor="email" className="form-label">
-                        Email<span className="text-danger">*</span>
-                      </label>
-                      <input
+                        <label htmlFor="email" className="text-light mb-3">Email<span className="text-danger">*</span></label>
+                      <div className="form-floating mb-3">
+                        <input
                         onChange={changeHandler}
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        id="email"
-                        placeholder="Alex@gmail.com"
-                        value={userDetails.email}
-                        required
-                      />
+                          type="email"
+                          name="email"
+                          className="form-control bg-dark text-light border-dark"
+                          id="email"
+                          value={userDetails.email}
+                          placeholder="name@example.com"
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="col-12">
-                      <label htmlFor="password" className="form-label">
-                        Password<span className="text-danger">*</span>
-                      </label>
-                      <input
-                        onChange={changeHandler}
-                        type="password"
-                        className="form-control"
-                        name="password"
-                        id="password"
-                        value={userDetails.password}
-                        required
-                      />
+                        <label htmlFor="password" className="text-light mb-3">Password<span className="text-danger">*</span></label>
+                      <div className="form-floating mb-3">
+                        <input
+                          onChange={changeHandler}
+                          type="password"
+                          name="password"
+                          className="form-control bg-dark text-light border-dark"
+                          id="password"
+                          value={userDetails.password}
+                          placeholder="Password"
+                          required
+                        />
+                      </div>
                     </div>
-
                     <div className="col-12">
                       <div className="d-grid">
                         <button
-                          className="btn bsb-btn-xl btn-dark"
+                          className="btn btn-primary btn-lg text-white fw-medium"
                           type="submit"
                         >
-                          Log in now
+                          Log In
                         </button>
                       </div>
                     </div>
                   </div>
                 </form>
-                <div className="row">
-                  <div className="col-12">
-                    <hr className="mt-5 mb-4 border-secondary-subtle" />
-                    <div className="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                      <Link
-                        to={"/register"}
-                        className="link-secondary text-decoration-none"
-                      >
-                        Create new account
-                      </Link>
-                    </div>
-                  </div>
+                <div className="text-center mt-4">
+                  <p className="text-light mb-0">
+                    Don't have an account?{" "}
+                    <Link to="/register" className="text-primary text-decoration-none">
+                      Sign Up
+                    </Link>
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
