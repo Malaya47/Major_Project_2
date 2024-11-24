@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import SuggestionListCard from "./SuggestionListCard";
 import ProfilePage from "../pages/ProfilePage";
+import { useLocation } from "react-router-dom";
 
 const RightView = () => {
+  const location = useLocation();
+  const path = location.pathname;
+  console.log(path);
   const [searchName, setSearchName] = useState("");
 
   const searchHandler = (e) => {
@@ -21,12 +25,13 @@ const RightView = () => {
           right: "0", // Stick to the right
         }}
       >
-        <div className="d-flex justify-content-evenly">
+        {path === "/" && <div className="d-flex justify-content-evenly">
           <button className="btn btn-primary mb-2 px-4">
             <i className="bi bi-fire"></i> Trending
           </button>
           <button className="btn btn-primary mb-2 px-4">Latest</button>
-        </div>
+        </div>}
+        
         <div className="d-flex">
           <input
             onChange={searchHandler}
