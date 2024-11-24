@@ -28,7 +28,8 @@ const MainProfilePage = () => {
           <div className="col-md-3">
             <LeftView />
           </div>
-          <div className="col-md-6" style={{ marginTop: "100px" }}>
+          <div className="col-md-6" style={{ marginTop: "100px",  backgroundColor: "#16181c",
+          minHeight: "100vh", }}>
             <div className="d-flex justify-content-between align-items-center">
               <img
                 style={{ width: "150px", height: "150px", objectFit: "cover" }}
@@ -52,7 +53,8 @@ const MainProfilePage = () => {
               </div>
             </div>
 
-            <div className="mt-4">
+            <div style={{  backgroundColor: "#16181c",
+          minHeight: "100vh",}} className="mt-4">
               <PostCard data={data} refetch={refetch} />
             </div>
           </div>

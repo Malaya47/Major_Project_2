@@ -73,7 +73,8 @@ const ProfilePage = () => {
                 <p className="me-3">{user?.followers.length} Followers</p>
               </div>
             </div>
-            <div className="mt-4">
+            <div style={{  backgroundColor: "#16181c",
+          minHeight: "100vh",}} className="mt-4">
               <PostCard data={data} refetch={refetch} />
             </div>
           </div>
