@@ -1,21 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  token: localStorage.getItem("loginToken") || null,
-  loggedInUser: null,
+  trendingOrLatest: "latest",
 };
 
 export const userSlice = createSlice({
-  name: "post",
+  name: "user",
   initialState,
   reducers: {
-    getLoggedInUser: (state, action) => {
-      state.loggedInUser = action.payload;
-    },
+    getTreandingOrLatestPosts: (state, action) => {
+       state.trendingOrLatest = action.payload;
+    }
   },
 });
 
 // Action generators
-export const { getLoggedInUser } = userSlice.actions;
+export const { getTreandingOrLatestPosts } = userSlice.actions;
 
 export default userSlice.reducer;
