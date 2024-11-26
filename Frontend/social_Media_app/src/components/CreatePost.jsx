@@ -121,6 +121,9 @@ const CreatePost = () => {
                   capture="camera"
                   onChange={(e) => setFile(e.target.files[0])} // Store the file in state
                 />
+                {
+                  file && <p>{file.name}<i onClick={() => setFile(null)} className="bi bi-x"></i></p>
+                  }
               </div>
               {/* Post button */}
               <button
