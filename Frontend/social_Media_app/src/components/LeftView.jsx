@@ -70,10 +70,19 @@ const LeftView = () => {
                 <span className="d-none d-sm-inline text-light">Bookmarks</span>
               </Link>
             </li>
+            <li className="nav-item fs-5">
+              <Link
+                className="nav-link d-flex align-items-center text-dark"
+                to="/mainProfile"
+              >
+                <i className="bi bi-person-fill me-2 text-light"></i>
+                <span className="d-none d-sm-inline text-light">Profile</span>
+              </Link>
+            </li>
 
             <li className="nav-item">
-              <Link to={"/"} className="btn btn-primary w-100 mt-3">
-                Post
+              <Link to={"/"} className="btn btn-primary mt-3 py-2 px-4">
+                Create New Post
               </Link>
             </li>
           </ul>
