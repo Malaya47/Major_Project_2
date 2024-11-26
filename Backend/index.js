@@ -388,13 +388,17 @@ app.delete("/user/:userId/delete/posts/:postId", async (req, res) => {
     );
 
     if (deletePost) {
-      res.status(200).json({ message: "Post and image deleted successfully", deletePost });
+      res
+        .status(200)
+        .json({ message: "Post and image deleted successfully", deletePost });
     } else {
       res.status(404).json({ message: "Post deletion failed" });
     }
   } catch (error) {
     console.error("Error occurred while deleting post:", error);
-    res.status(500).json({ message: "Error occurred while deleting post", error });
+    res
+      .status(500)
+      .json({ message: "Error occurred while deleting post", error });
   }
 });
 
@@ -548,6 +552,23 @@ function verifyToken(req, res, next) {
 app.get("/data", verifyToken, (req, res) => {
   res.json({ message: "Data found" });
 });
+
+
+// API for updating logged in profile data
+app.put("/profile/updateProfile/:userId", async (req, res) => {
+    try {
+      const updatedUserDetails = req.body;
+      const userId = req.params.userId;
+      const updatedUser = await User.findByIdAndUpdate(userId, updatedUserDetails, {new: true});
+      if(updatedUser){
+        res.status(200).json({message: "Profile updated successfully", updatedUser});
+      } else {
+        res.status(404).json({message: "User not found"});
+      }
+    } catch (error){
+      res.status(500).json({message: "Unable to update profile"});
+    }
+})
 
 const PORT = 3000;
 app.listen(PORT, () => {
