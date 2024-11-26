@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../features/apiSlice";
 import { useDispatch } from "react-redux";
-import { getLoggedInUser } from "../features/userSlice";
+
 
 const LogInForm = () => {
   const dispatch = useDispatch();

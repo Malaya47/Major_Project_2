@@ -7,7 +7,10 @@ import {
 
 const CreatePost = () => {
   const [createPostFn, { isLoading }] = useCreatePostMutation();
-  const { refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
+  const { data, refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
+
+  const {user} = data || {};
+ 
 
   const [post, setPost] = useState("");
   const [imgUrl, setImgUrl] = useState("");
@@ -80,8 +83,8 @@ const CreatePost = () => {
             <div className="d-flex align-items-start border-bottom border-info-subtle pb-2 mb-3">
               <img
                 style={{ width: "50px" }}
-                className="img-fluid"
-                src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU="
+                className="img-fluid rounded-circle"
+                src={user?.profileImage}
                 alt="avatar"
               />
               <div className="ms-3 flex-grow-1">

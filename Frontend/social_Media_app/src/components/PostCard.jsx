@@ -13,7 +13,7 @@ import {
 import EditPost from "../components/EditPost";
 
 const PostCard = ({ data, refetch }) => {
-  console.log(data);
+
   const [deleteFn, { isSuccess }] = useDeletePostMutation();
   const [likedFn] = useLikePostMutation();
   const [unlikedFn] = useUnlikePostMutation();
@@ -84,6 +84,8 @@ const PostCard = ({ data, refetch }) => {
     }
   };
 
+    
+     
   return (
     <section style={{ backgroundColor: "#16181c" }} className="container p-3">
       {data?.user?.posts?.map((post) => (
@@ -98,7 +100,7 @@ const PostCard = ({ data, refetch }) => {
                 <img
                   style={{ width: "50px", height: "50px" }}
                   className="img-fluid rounded-circle"
-                  src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU="
+                  src={data?.user?.profileImage}
                   alt="avatar"
                 />
                 <div className="ms-3">
