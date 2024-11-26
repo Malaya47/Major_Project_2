@@ -2,16 +2,25 @@ import React, { useState } from "react";
 import SuggestionListCard from "./SuggestionListCard";
 import ProfilePage from "../pages/ProfilePage";
 import { useLocation } from "react-router-dom";
+import { getTreandingOrLatestPosts } from "../features/userSlice";
+import { useDispatch } from "react-redux";
 
 const RightView = () => {
+  const dispatch = useDispatch(); 
   const location = useLocation();
   const path = location.pathname;
-  console.log(path);
+
   const [searchName, setSearchName] = useState("");
 
   const searchHandler = (e) => {
     setSearchName(e.target.value);
   };
+
+  const trendingPostsHandler = (e) => {
+    if(e.target.name === "trending" || e.target.name === "latest"){
+      dispatch(getTreandingOrLatestPosts(e.target.name));  
+    }
+  }
 
   return (
     <>
@@ -26,10 +35,10 @@ const RightView = () => {
         }}
       >
         {path === "/" && <div className="d-flex justify-content-evenly">
-          <button className="btn btn-primary mb-2 px-4">
+          <button onClick={trendingPostsHandler} name="trending" className="btn btn-primary mb-2 px-4">
             <i className="bi bi-fire"></i> Trending
           </button>
-          <button className="btn btn-primary mb-2 px-4">Latest</button>
+          <button onClick={trendingPostsHandler} name="latest" className="btn btn-primary mb-2 px-4">Latest</button>
         </div>}
         
         <div className="d-flex">
