@@ -6,6 +6,10 @@ body {
   overflow-x: hidden;
 }
 
+input:focus{
+  outline: none;
+}
+
 .popover-item:hover {
   background-color: #343a40;
   color: white;

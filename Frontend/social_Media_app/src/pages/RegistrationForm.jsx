@@ -31,41 +31,42 @@ const RegistrationForm = () => {
   };
 
   return (
-    <section className="p-3 p-md-4 p-xl-5">
+    <section style={{backgroundColor: "#16181c"}} className="p-3 p-md-4 p-xl-5">
       <div className="container">
-        <div className="card border-light-subtle shadow-sm">
+        <div className="card border-dark shadow-sm">
           <div className="row g-0">
-            <div className="col-12 col-md-6 ">
+            <div style={{ backgroundColor: "#1e2126" }} className="col-12 col-md-6">
               <div className="d-flex align-items-center justify-content-center h-100">
-                <div className="col-10 col-xl-8 py-3">
-                  <img
-                    className="img-fluid rounded mb-4"
-                    loading="lazy"
-                    src="https://images.pexels.com/photos/2818118/pexels-photo-2818118.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    alt="BootstrapBrain Logo"
-                  />
+              <div className="d-flex flex-column align-items-center justify-content-center h-100 p-5 text-light">
+                <h1 className="display-4 fw-bold mb-3 text-primary">Quantum Verse</h1>
+                <p className="text-primary mb-4">Step into Quantum Verse</p>
+                <div className="text-center">
+                  <h3 className="fw-light mb-3 text-light">Discover <span style={{fontSize: "12px"}} className="text-uppercase">People around the world</span></h3>
+                  <h3 className="fw-light mb-3 text-light">Share <span style={{fontSize: "12px"}} className="text-uppercase">what you thinking</span></h3>
+                  <h3 className="fw-light mb-3 text-light">Connect <span style={{fontSize: "12px"}} className="text-uppercase">with your friends</span></h3>
                 </div>
               </div>
+              </div>
             </div>
-            <div className="col-12 col-md-6">
+            <div style={{ backgroundColor: "#242731" }} className="col-12 col-md-6">
               <div className="card-body p-3 p-md-4 p-xl-5">
                 <div className="row">
                   <div className="col-12">
                     <div className="mb-5">
-                      <h3>Register</h3>
+                      <h3 className="text-light text-center">Register</h3>
                     </div>
                   </div>
                 </div>
                 <form onSubmit={registerHandler}>
                   <div className="row gy-3 gy-md-4 overflow-hidden">
                     <div className="col-12">
-                      <label htmlFor="email" className="form-label">
+                      <label htmlFor="email" className="form-label text-light">
                         Name<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
                         type="text"
-                        className="form-control"
+                        className="form-control bg-dark text-light border-dark"
                         name="name"
                         placeholder="Enter your name"
                         value={userDetails.name}
@@ -73,13 +74,13 @@ const RegistrationForm = () => {
                       />
                     </div>
                     <div className="col-12">
-                      <label htmlFor="email" className="form-label">
+                      <label htmlFor="email" className="form-label text-light">
                         Username<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
                         type="text"
-                        className="form-control"
+                        className="form-control bg-dark text-light border-dark"
                         name="username"
                         placeholder="create your username"
                         value={userDetails.username}
@@ -87,13 +88,13 @@ const RegistrationForm = () => {
                       />
                     </div>
                     <div className="col-12">
-                      <label htmlFor="email" className="form-label">
+                      <label htmlFor="email" className="form-label text-light">
                         Email<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
                         type="email"
-                        className="form-control"
+                        className="form-control bg-dark text-light border-dark"
                         name="email"
                         id="email"
                         placeholder="Alex@gmail.com"
@@ -102,13 +103,13 @@ const RegistrationForm = () => {
                       />
                     </div>
                     <div className="col-12">
-                      <label htmlFor="password" className="form-label">
+                      <label htmlFor="password" className="form-label text-light">
                         Password<span className="text-danger">*</span>
                       </label>
                       <input
                         onChange={changeHandler}
                         type="password"
-                        className="form-control"
+                        className="form-control bg-dark text-light border-dark"
                         name="password"
                         id="password"
                         value={userDetails.password}
@@ -119,7 +120,7 @@ const RegistrationForm = () => {
                     <div className="col-12">
                       <div className="d-grid">
                         <button
-                          className="btn bsb-btn-xl btn-dark"
+                          className="btn bsb-btn-xl btn-primary"
                           type="submit"
                         >
                           Register now
@@ -128,18 +129,13 @@ const RegistrationForm = () => {
                     </div>
                   </div>
                 </form>
-                <div className="row">
-                  <div className="col-12">
-                    <hr className="mt-5 mb-4 border-secondary-subtle" />
-                    <div className="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                      <Link
-                        to={"/login"}
-                        className="link-secondary text-decoration-none"
-                      >
-                        Log In
-                      </Link>
-                    </div>
-                  </div>
+                <div className="text-center mt-4">
+                  <p className="text-light mb-0">
+                   Already have an account?{" "}
+                    <Link to="/login" className="text-primary text-decoration-none">
+                      Log In
+                    </Link>
+                  </p>
                 </div>
               </div>
             </div>

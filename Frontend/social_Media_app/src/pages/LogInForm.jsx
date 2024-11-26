@@ -40,13 +40,13 @@ const LogInForm = () => {
 
   return (
     <div className="min-vh-100 d-flex align-items-center" style={{ backgroundColor: "#16181c" }}>
-      <div className="container">
-        <div className="card border-0 shadow-lg" style={{ backgroundColor: "#1e2126" }}>
-          <div className="row g-0">
+      <div className="container ">
+        <div className="card   border-0 shadow-lg" style={{ backgroundColor: "#1e2126" }}>
+          <div className="row  g-0">
             <div className="col-12 col-md-6">
               <div className="d-flex flex-column align-items-center justify-content-center h-100 p-5 text-light">
                 <h1 className="display-4 fw-bold mb-3 text-primary">Quantum Verse</h1>
-                <p className="text-muted mb-4">Step into Quantum Verse</p>
+                <p className="text-primary mb-4">Step into Quantum Verse</p>
                 <div className="text-center">
                   <h3 className="fw-light mb-3 text-light">Discover <span style={{fontSize: "12px"}} className="text-uppercase">People around the world</span></h3>
                   <h3 className="fw-light mb-3 text-light">Share <span style={{fontSize: "12px"}} className="text-uppercase">what you thinking</span></h3>

@@ -100,6 +100,16 @@ export const apiSlice = createApi({
         },
       }),
     }),
+    editUser: builder.mutation({
+      query: (updatedUser) => ({
+        url: `profile/updateProfile/${updatedUser._id}`,
+        method: "Put",
+        body: updatedUser,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
@@ -120,4 +130,5 @@ export const {
   useSearchUserQuery,
   useRegisterUserMutation,
   useLoginUserMutation,
+  useEditUserMutation
 } = apiSlice;
