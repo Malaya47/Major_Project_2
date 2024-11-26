@@ -3,11 +3,12 @@ import Header from "../components/Header";
 import LeftView from "../components/LeftView";
 import RightView from "../components/RightView";
 import { useGetProfileUserQuery, useEditUserMutation } from "../features/apiSlice";
+import { useNavigate } from "react-router-dom";
 
 import PostCard from "../components/PostCard";
 
 const MainProfilePage = () => {
-  
+  const navigate = useNavigate(); 
   const { data, isLoading, isError, error, refetch } = useGetProfileUserQuery(
     localStorage.getItem("userId")
   );
@@ -43,6 +44,12 @@ const editChangeHandler = (e) => {
   e.preventDefault();
   editUserFn({...editUserDetails, profileImage: avatarImage})
   refetch();
+ }
+
+ const logoutHandler = () => {
+  localStorage.clear();
+  navigate("/login")
+
  }
 
   
@@ -179,7 +186,7 @@ const editChangeHandler = (e) => {
     </div>
   </div>
 </div>
-              <button className="btn btn-primary rounded-pill px-3 py-2">
+              <button onClick={logoutHandler} className="btn btn-primary rounded-pill px-3 py-2">
                 Logout
               </button>
               </div>
