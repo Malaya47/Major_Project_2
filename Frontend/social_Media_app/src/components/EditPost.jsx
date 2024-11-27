@@ -5,28 +5,39 @@ import {
 } from "../features/apiSlice";
 import { Modal } from "bootstrap";
 
+
+
 const EditPost = ({ editPost }) => {
-  console.log(editPost);
+ 
   const [editFn, { isSuccess }] = useEditPostMutation();
-  const { refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
+  const { data, refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
+  
+  const {user} = data || {}
 
-  const [postText, setPostText] = useState(editPost.postTextContent);
-
+  const [postText, setPostText] = useState(editPost?.postTextContent || "");
+const [postImage, setPostImage] = useState(editPost?.postImage || "");
+const [imagePublicId, setImagePublicId] = useState(editPost?.imagePublicId || ""); 
+  
   useEffect(() => {
-    setPostText(editPost.postTextContent);
-  }, [editPost.postTextContent]);
+    setPostText(editPost?.postTextContent || "");
+  setPostImage(editPost?.postImage || "");
+  setImagePublicId(editPost?.imagePublicId || "");
+  }, [editPost]);
 
+  
+   
   const textAreaHandler = (e) => {
     setPostText(e.target.value);
   };
 
   const removeMedia = () => {
-    console.log("remove media");
+  setPostImage('')
+  setImagePublicId('')
   };
 
   const saveChanges = async () => {
     try {
-      const response = await editFn({ ...editPost, postTextContent: postText });
+      const response = await editFn({ ...editPost, postTextContent: postText, postImage: postImage, imagePublicId: imagePublicId });
 
       if (response?.data) {
         await refetch();
@@ -50,7 +61,7 @@ const EditPost = ({ editPost }) => {
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <div className="modal-content">
+          <div style={{ backgroundColor: "#16181c" }} className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Edit post details
@@ -58,7 +69,7 @@ const EditPost = ({ editPost }) => {
               <button
                 onClick={closeModalHandler}
                 type="button"
-                className="btn-close"
+                className="btn-close btn-close-white"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -67,28 +78,31 @@ const EditPost = ({ editPost }) => {
               <div className="d-flex align-items-start border-bottom pb-2 mb-3">
                 <img
                   style={{ width: "50px" }}
-                  className="img-fluid"
-                  src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU="
+                  className="img-fluid rounded-circle"
+                  src={user?.profileImage}
                   alt="avatar"
                 />
                 <div className="ms-3 flex-grow-1">
                   <textarea
+                  
                     value={postText}
                     onChange={textAreaHandler}
                     className="form-control border-0"
                     placeholder="What's on your mind?"
                     id="floatingTextarea"
                     style={{
+                      color: "white",
                       width: "100%",
                       outline: "none",
                       resize: "none",
                       boxShadow: "none",
+                      backgroundColor: "#16181c",
                     }}
                   ></textarea>
                 </div>
               </div>
               <div>
-                {"" && (
+                {postImage && (
                   <span className="badge rounded-pill text-bg-dark">
                     Media <i onClick={removeMedia} className="bi bi-x"></i>
                   </span>

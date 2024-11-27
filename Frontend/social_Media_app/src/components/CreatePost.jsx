@@ -4,8 +4,11 @@ import {
   useCreatePostMutation,
   useGetProfileUserQuery,
 } from "../features/apiSlice";
+import { setFile } from "../features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const CreatePost = () => {
+  const dispatch = useDispatch();
   const [createPostFn, { isLoading }] = useCreatePostMutation();
   const { data, refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
 
@@ -15,7 +18,8 @@ const CreatePost = () => {
   const [post, setPost] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [imgPublicId, setImgPublicId] = useState("");
-  const [file, setFile] = useState(null); // Store the selected file
+
+  const file = useSelector((state) => state.user.file);
 
   const textAreaHandler = (e) => {
     setPost(e.target.value);
@@ -68,12 +72,21 @@ const CreatePost = () => {
         setPost("");
         setImgUrl(""); // Reset image URL
         setImgPublicId("");
-        setFile(null); // Clear the file state
+       dispatch(setFile(null)) ; // Clear the file state
+        
       }
     } catch (error) {
       console.log("Error creating post", error);
     }
   };
+
+  const fileChangeHandler = (e) => {
+    dispatch(setFile(e.target.files[0]));
+  }
+
+  const deleteFileHandler = () => {
+    dispatch(setFile(null));
+  }
 
   return (
     <>
@@ -119,10 +132,10 @@ const CreatePost = () => {
                   style={{ display: "none" }}
                   accept="image/*"
                   capture="camera"
-                  onChange={(e) => setFile(e.target.files[0])} // Store the file in state
+                  onChange={fileChangeHandler} // Store the file in state
                 />
                 {
-                  file && <p>{file.name}<i onClick={() => setFile(null)} className="bi bi-x"></i></p>
+                  file  && <p>{file.name}<i onClick={deleteFileHandler} className="bi bi-x"></i></p>
                   }
               </div>
               {/* Post button */}
