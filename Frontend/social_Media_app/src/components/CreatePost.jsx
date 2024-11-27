@@ -6,7 +6,7 @@ import {
 } from "../features/apiSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Bounce } from "react-toastify";
+import { Slide } from "react-toastify";
 
 const CreatePost = () => {
   // const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const CreatePost = () => {
           draggable: true,
           progress: undefined,
           theme: "dark",
-          transition: Bounce,
+          transition: Slide,
         });
         setPost("");
         setImgUrl(""); // Reset image URL

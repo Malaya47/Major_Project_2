@@ -1,6 +1,13 @@
 import { NavLink } from "react-router-dom";
+import { useGetProfileUserQuery } from "../features/apiSlice";
 
 const Header = () => {
+  const { data, isLoading, isError, error, refetch } = useGetProfileUserQuery(
+    localStorage.getItem("userId")
+  );
+
+  const { user } = data || {};
+
   return (
     <header>
       <nav
@@ -39,7 +46,12 @@ const Header = () => {
 
               <li className="nav-item ms-3">
                 <NavLink className="nav-link text-light" to="/mainProfile">
-                  Profile
+                  <img
+                    style={{ width: "40px" }}
+                    className="img-fluid rounded-circle"
+                    src={user?.profileImage}
+                    alt="profile-picture"
+                  />
                 </NavLink>
               </li>
             </ul>

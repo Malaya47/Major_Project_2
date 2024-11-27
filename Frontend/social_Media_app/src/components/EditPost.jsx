@@ -4,40 +4,58 @@ import {
   useGetProfileUserQuery,
 } from "../features/apiSlice";
 import { Modal } from "bootstrap";
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Slide } from "react-toastify";
 
 const EditPost = ({ editPost }) => {
- 
   const [editFn, { isSuccess }] = useEditPostMutation();
-  const { data, refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
-  
-  const {user} = data || {}
+  const { data, refetch } = useGetProfileUserQuery(
+    localStorage.getItem("userId")
+  );
+
+  const { user } = data || {};
 
   const [postText, setPostText] = useState(editPost?.postTextContent || "");
-const [postImage, setPostImage] = useState(editPost?.postImage || "");
-const [imagePublicId, setImagePublicId] = useState(editPost?.imagePublicId || ""); 
-  
+  const [postImage, setPostImage] = useState(editPost?.postImage || "");
+  const [imagePublicId, setImagePublicId] = useState(
+    editPost?.imagePublicId || ""
+  );
+
   useEffect(() => {
     setPostText(editPost?.postTextContent || "");
-  setPostImage(editPost?.postImage || "");
-  setImagePublicId(editPost?.imagePublicId || "");
+    setPostImage(editPost?.postImage || "");
+    setImagePublicId(editPost?.imagePublicId || "");
   }, [editPost]);
 
-  
-   
   const textAreaHandler = (e) => {
     setPostText(e.target.value);
   };
 
   const removeMedia = () => {
-  setPostImage('')
-  setImagePublicId('')
+    setPostImage("");
+    setImagePublicId("");
   };
 
   const saveChanges = async () => {
+    toast.success("Post updated successfully!", {
+      position: "bottom-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Slide,
+    });
     try {
-      const response = await editFn({ ...editPost, postTextContent: postText, postImage: postImage, imagePublicId: imagePublicId });
+      const response = await editFn({
+        ...editPost,
+        postTextContent: postText,
+        postImage: postImage,
+        imagePublicId: imagePublicId,
+      });
 
       if (response?.data) {
         await refetch();
@@ -84,7 +102,6 @@ const [imagePublicId, setImagePublicId] = useState(editPost?.imagePublicId || ""
                 />
                 <div className="ms-3 flex-grow-1">
                   <textarea
-                  
                     value={postText}
                     onChange={textAreaHandler}
                     className="form-control border-0"
