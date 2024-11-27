@@ -4,22 +4,23 @@ import {
   useCreatePostMutation,
   useGetProfileUserQuery,
 } from "../features/apiSlice";
-import { setFile } from "../features/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Bounce } from "react-toastify";
 
 const CreatePost = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [createPostFn, { isLoading }] = useCreatePostMutation();
-  const { data, refetch } = useGetProfileUserQuery(localStorage.getItem("userId"));
+  const { data, refetch } = useGetProfileUserQuery(
+    localStorage.getItem("userId")
+  );
 
-  const {user} = data || {};
- 
+  const { user } = data || {};
 
   const [post, setPost] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [imgPublicId, setImgPublicId] = useState("");
-
-  const file = useSelector((state) => state.user.file);
+  const [file, setFile] = useState(null);
 
   const textAreaHandler = (e) => {
     setPost(e.target.value);
@@ -69,11 +70,21 @@ const CreatePost = () => {
       const response = await createPostFn(createPost);
       if (response?.data) {
         refetch();
+        toast.success("Posted successfully!", {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+        });
         setPost("");
         setImgUrl(""); // Reset image URL
         setImgPublicId("");
-       dispatch(setFile(null)) ; // Clear the file state
-        
+        setFile(null); // Clear the file state
       }
     } catch (error) {
       console.log("Error creating post", error);
@@ -81,15 +92,16 @@ const CreatePost = () => {
   };
 
   const fileChangeHandler = (e) => {
-    dispatch(setFile(e.target.files[0]));
-  }
+    setFile(e.target.files[0]);
+  };
 
   const deleteFileHandler = () => {
-    dispatch(setFile(null));
-  }
+    setFile(null);
+  };
 
   return (
     <>
+      <ToastContainer />
       <section className="container-fluid p-3">
         <div className="row justify-content-center">
           <div className="col-12 col-md-8 col-lg-10 border border-info-subtle p-3 rounded">
@@ -134,16 +146,28 @@ const CreatePost = () => {
                   capture="camera"
                   onChange={fileChangeHandler} // Store the file in state
                 />
-                {
-                  file  && <p>{file.name}<i onClick={deleteFileHandler} className="bi bi-x"></i></p>
-                  }
+                {file && (
+                  <p>
+                    {file.name}
+                    <i onClick={deleteFileHandler} className="bi bi-x"></i>
+                  </p>
+                )}
               </div>
               {/* Post button */}
               <button
                 onClick={postHandler}
                 className="btn btn-sm btn-primary px-3"
+                disabled={isLoading} // Disable button while loading
               >
-                Post
+                {isLoading ? (
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                ) : (
+                  "Post"
+                )}
               </button>
             </div>
           </div>

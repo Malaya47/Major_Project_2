@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   trendingOrLatest: "latest",
-  file: null,
 };
 
 export const userSlice = createSlice({
@@ -12,9 +11,6 @@ export const userSlice = createSlice({
     getTreandingOrLatestPosts: (state, action) => {
       state.trendingOrLatest = action.payload;
     },
-    setFile: (state, action) => {
-      state.file = action.payload;
-    }
   },
 });
 
