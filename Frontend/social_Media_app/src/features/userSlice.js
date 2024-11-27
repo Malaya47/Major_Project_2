@@ -10,7 +10,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     getTreandingOrLatestPosts: (state, action) => {
-       state.trendingOrLatest = action.payload;
+      state.trendingOrLatest = action.payload;
     },
     setFile: (state, action) => {
       state.file = action.payload;
