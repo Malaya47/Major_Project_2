@@ -337,11 +337,13 @@ app.put("/posts/editPost/:postId", async (req, res) => {
     const postId = req.params.postId;
     const postTextContent = req.body.postTextContent;
     const postImage = req.body.postImage;
+    const postImagePublicId = req.body.imagePublicId;
     const post = await Post.findByIdAndUpdate(
       postId,
       {
         postTextContent: postTextContent,
         postImage: postImage,
+        imagePublicId: postImagePublicId
       },
       { new: true }
     );
