@@ -1,4 +1,5 @@
-# Social Media App
+
+# Quantum Verse 
 
 A modern social media application built with React and Redux, featuring a responsive design and real-time interactions.
 
