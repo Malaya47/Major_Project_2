@@ -8,7 +8,7 @@ const LogInForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginFn, { data }] = useLoginUserMutation();
-  console.log(data);
+
 
   const [userDetails, setUserDetails] = useState({
     email: "",
@@ -37,6 +37,27 @@ const LogInForm = () => {
       password: "",
     });
   };
+
+  const loginGuestHandler = async () => {
+     const guestCredentials = {
+      email: "tanay@gmail.com",
+      password: "tanay"
+     }
+    setUserDetails(guestCredentials); 
+    const response = await loginFn(guestCredentials);
+
+    if (response?.data?.token) {
+      localStorage.setItem("loginToken", response.data.token);
+      localStorage.setItem("userId", response.data.user._id);
+      navigate("/");
+    }
+
+    setUserDetails({
+      email: "",
+      password: "",
+    });
+  }
+
 
   return (
     <div className="min-vh-100 d-flex align-items-center" style={{ backgroundColor: "#16181c" }}>
@@ -95,10 +116,17 @@ const LogInForm = () => {
                     <div className="col-12">
                       <div className="d-grid">
                         <button
-                          className="btn btn-primary btn-lg text-white fw-medium"
+                          className="btn btn-primary btn-lg text-white fw-medium mb-3"
                           type="submit"
                         >
                           Log In
+                        </button>
+                        <button
+                          name="guest" 
+                          className="btn btn-primary btn-lg text-white fw-medium"
+                          onClick={loginGuestHandler}
+                        >
+                          Login As Guest
                         </button>
                       </div>
                     </div>
