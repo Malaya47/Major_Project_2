@@ -67,10 +67,10 @@ const ProfilePage = () => {
               <p>{user?.userName}</p>
               <p>{user?.bio}</p>
               <p>https://google.com</p>
-              <div className="d-flex">
-                <p className="me-3">{user?.posts.length} Posts</p>
-                <p className="me-3">{user?.following.length} Following</p>
-                <p className="me-3">{user?.followers.length} Followers</p>
+              <div className="d-flex justify-content-start gap-3 mt-3">
+                <p className="fs-3">{user?.posts.length} Posts</p>
+                <p className="fs-3">{user?.following.length} Following</p>
+                <p className="fs-3">{user?.followers.length} Followers</p>
               </div>
             </div>
             <div style={{  backgroundColor: "#16181c",
