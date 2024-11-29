@@ -5,7 +5,7 @@ import RightView from "./RightView";
 const View = () => {
   return (
     <>
-      <section>
+      <section className="container-fluid px-0">
         <div className="row">
           <div className="col-md-3">
             {" "}

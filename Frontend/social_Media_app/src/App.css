@@ -4,6 +4,23 @@
 
 body {
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.container-fluid {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 input:focus{
@@ -14,6 +31,13 @@ input:focus{
   background-color: #343a40;
   color: white;
 }
+
+.white-placeholder::placeholder {
+  color: white !important;
+  opacity: 1;
+}
+
+
 
 
 
