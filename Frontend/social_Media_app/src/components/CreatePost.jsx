@@ -117,7 +117,7 @@ const CreatePost = () => {
                   autoFocus
                   value={post}
                   onChange={textAreaHandler}
-                  className="form-control border-0"
+                  className="form-control border-0 white-placeholder"
                   placeholder="What's on your mind?"
                   id="floatingTextarea"
                   style={{
