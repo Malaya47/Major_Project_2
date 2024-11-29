@@ -18,7 +18,7 @@ const Header = () => {
           <NavLink to="/" className="navbar-brand text-light">
             Quantum Verse
           </NavLink>
-          <button
+          {/* <button
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -28,22 +28,12 @@ const Header = () => {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
-          </button>
+          </button> */}
           <div
-            className="collapse navbar-collapse justify-content-between"
+            className=""
             id="navbarNav"
           >
             <ul className="navbar-nav ms-auto d-flex align-items-center">
-              <li className="nav-item">
-                <NavLink
-                  to={"/login"}
-                  className="btn btn-secondary"
-                  aria-current="page"
-                >
-                  Login
-                </NavLink>
-              </li>
-
               <li className="nav-item ms-3">
                 <NavLink className="nav-link text-light" to="/mainProfile">
                   <img
