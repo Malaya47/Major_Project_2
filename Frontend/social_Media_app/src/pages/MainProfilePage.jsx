@@ -196,10 +196,10 @@ const editChangeHandler = (e) => {
               <p>{user?.userName}</p>
               <p>{user?.bio}</p>
               <a href="https://malayatiwari.netlify.app/" target="_blank">{user?.profileLink}</a>
-              <div className="d-flex">
-                <p className="me-3">{user?.posts.length} Posts</p>
-                <p className="me-3">{user?.following.length} Following</p>
-                <p className="me-3">{user?.followers.length} Followers</p>
+              <div className="d-flex justify-content-start gap-3 mt-3">
+                <p className="fs-3">{user?.posts.length} Posts</p>
+                <p className="fs-3">{user?.following.length} Following</p>
+                <p className="fs-3">{user?.followers.length} Followers</p>
               </div>
             </div>
 
