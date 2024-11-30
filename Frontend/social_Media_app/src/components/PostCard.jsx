@@ -117,7 +117,7 @@ const PostCard = ({ data, refetch }) => {
                     )}
                   </div>
                 </div>
-                {data?.user?.name && (
+                {localStorage.getItem("userId") === data?.user?._id && (
                   <OverlayTrigger
                     trigger="click"
                     placement="bottom"
