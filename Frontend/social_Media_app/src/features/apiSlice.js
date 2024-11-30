@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_API_URL}` }),
   endpoints: (builder) => ({
     getProfileUser: builder.query({
       query: (id) => `profileUser/${id}`,
@@ -130,5 +130,5 @@ export const {
   useSearchUserQuery,
   useRegisterUserMutation,
   useLoginUserMutation,
-  useEditUserMutation
+  useEditUserMutation,
 } = apiSlice;
