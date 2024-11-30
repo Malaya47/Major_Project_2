@@ -12,6 +12,7 @@ const jwt = require("jsonwebtoken");
 
 const corsOptions = {
   origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
   Credentials: true,
 };
 
