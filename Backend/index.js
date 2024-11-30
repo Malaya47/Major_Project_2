@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
@@ -32,25 +33,27 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Set up Multer storage with Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads", // Folder name in Cloudinary
+    allowed_formats: ["jpg", "jpeg", "png"], // Restrict file formats
+  },
+});
+
 // Multer for file handling
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage });
 
 // Endpoint to handle image upload
 app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
-    const filePath = req.file.path; // Path to the uploaded file
+    // Cloudinary file details from req.file
+    const imageUrl = req.file.path; // Cloudinary URL of the uploaded file
+    const imagePublicId = req.file.filename; // Public ID in Cloudinary
 
-    // Upload the file to Cloudinary
-    const result = await cloudinary.uploader.upload(filePath);
-
-    // Delete the local file after uploading to Cloudinary
-    fs.unlinkSync(filePath);
-
-    // Return the Cloudinary URL to the client
-    console.log(result);
-    res
-      .status(200)
-      .json({ imageUrl: result.secure_url, imagePublicId: result.public_id });
+    // Respond with the Cloudinary URL and public ID
+    res.status(200).json({ imageUrl, imagePublicId });
   } catch (error) {
     console.error("Cloudinary upload error:", error);
     res.status(500).json({ error: "Failed to upload image" });
@@ -343,7 +346,7 @@ app.put("/posts/editPost/:postId", async (req, res) => {
       {
         postTextContent: postTextContent,
         postImage: postImage,
-        imagePublicId: postImagePublicId
+        imagePublicId: postImagePublicId,
       },
       { new: true }
     );
@@ -555,22 +558,27 @@ app.get("/data", verifyToken, (req, res) => {
   res.json({ message: "Data found" });
 });
 
-
 // API for updating logged in profile data
 app.put("/profile/updateProfile/:userId", async (req, res) => {
-    try {
-      const updatedUserDetails = req.body;
-      const userId = req.params.userId;
-      const updatedUser = await User.findByIdAndUpdate(userId, updatedUserDetails, {new: true});
-      if(updatedUser){
-        res.status(200).json({message: "Profile updated successfully", updatedUser});
-      } else {
-        res.status(404).json({message: "User not found"});
-      }
-    } catch (error){
-      res.status(500).json({message: "Unable to update profile"});
+  try {
+    const updatedUserDetails = req.body;
+    const userId = req.params.userId;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updatedUserDetails,
+      { new: true }
+    );
+    if (updatedUser) {
+      res
+        .status(200)
+        .json({ message: "Profile updated successfully", updatedUser });
+    } else {
+      res.status(404).json({ message: "User not found" });
     }
-})
+  } catch (error) {
+    res.status(500).json({ message: "Unable to update profile" });
+  }
+});
 
 const PORT = 3000;
 app.listen(PORT, () => {
