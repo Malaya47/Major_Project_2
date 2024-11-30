@@ -123,6 +123,7 @@ const LogInForm = () => {
                         </button>
                         <button
                           name="guest" 
+                          type="button"
                           className="btn btn-primary btn-lg text-white fw-medium"
                           onClick={loginGuestHandler}
                         >
