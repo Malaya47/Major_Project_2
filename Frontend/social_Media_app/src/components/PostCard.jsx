@@ -90,7 +90,7 @@ const PostCard = ({ data, refetch }) => {
             <div className="col-12 col-md-10 col-lg-12 border border-info-subtle rounded py-3 px-4">
               <div className="d-flex align-items-start justify-content-between pb-2">
                 <div className="d-flex align-items-start">
-                  <img
+                <img
                     style={{ width: "50px", height: "50px" }}
                     className="img-fluid rounded-circle"
                     src={data?.user?.profileImage}

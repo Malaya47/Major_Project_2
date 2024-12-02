@@ -105,7 +105,7 @@ const CreatePost = () => {
           <div className="col-12 col-md-8 col-lg-10 border border-info-subtle p-3 rounded">
             <div className="d-flex align-items-start border-bottom border-info-subtle pb-2 mb-3">
               <img
-                style={{ width: "50px" }}
+                style={{ width: "50px", height: "50px" }}
                 className="img-fluid rounded-circle"
                 src={user?.profileImage}
                 alt="avatar"

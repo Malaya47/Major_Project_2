@@ -34,7 +34,7 @@ const Header = () => {
               <li className="nav-item ms-3">
                 <NavLink className="nav-link text-light" to="/mainProfile">
                   <img
-                    style={{ width: "40px" }}
+                    style={{ width: "40px", height: "40px", objectFit: "cover" }}
                     className="img-fluid rounded-circle"
                     src={user?.profileImage}
                     alt="profile-picture"
