@@ -8,6 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Slide } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const CreatePost = () => {
   // const dispatch = useDispatch();
   const [createPostFn, { isLoading }] = useCreatePostMutation();
@@ -50,15 +52,11 @@ const CreatePost = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await axios.post(
-          "http://localhost:3000/api/upload",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const response = await axios.post(`${API_URL}/api/upload`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         setImgUrl(response.data.imageUrl); // Update the imgUrl
         setImgPublicId(response.data.imagePublicId); // adding public_id
