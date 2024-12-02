@@ -141,7 +141,7 @@ const CreatePost = () => {
                   type="file"
                   style={{ display: "none" }}
                   accept="image/*"
-                  capture="camera"
+                  // capture="camera"
                   onChange={fileChangeHandler} // Store the file in state
                 />
                 {file && (
