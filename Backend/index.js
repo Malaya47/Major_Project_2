@@ -11,9 +11,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const corsOptions = {
-  origin: "*",
+  origin: [
+    "http://localhost:5173",  // local frontend
+    "https://quantum-verse-frontend.vercel.app"  // deployed frontend
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
-  Credentials: true,
+  credentials: true,
 };
 
 // initialising database
